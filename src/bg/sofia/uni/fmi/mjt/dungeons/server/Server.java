@@ -25,7 +25,6 @@ public class Server {
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-
             while (true) {
                 int readyChannels = selector.select();
                 if (readyChannels == 0) {

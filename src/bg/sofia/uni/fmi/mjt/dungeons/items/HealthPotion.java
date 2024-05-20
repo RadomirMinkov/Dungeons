@@ -1,6 +1,5 @@
 package bg.sofia.uni.fmi.mjt.dungeons.items;
 
-import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
 
 public class HealthPotion implements Treasure, Potion {

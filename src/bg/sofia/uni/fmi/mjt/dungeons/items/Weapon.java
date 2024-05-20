@@ -52,7 +52,7 @@ public class Weapon implements Pickable, Treasure, Item {
     @Override
     public void upgradeItem() {
         level += 1;
-        attack = attack + attack * upgradePercent;
+        attack += attack * upgradePercent;
         upgradePercent += ZERO_POINT_ZEROFIVE;
     }
 
