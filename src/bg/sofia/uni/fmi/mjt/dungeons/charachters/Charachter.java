@@ -22,7 +22,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.UsefulFunctions;
 
-public class Player implements Actor {
+public class Charachter implements Actor {
 
     private int level;
     private Stats stats;
@@ -37,7 +37,7 @@ public class Player implements Actor {
 
     private int neededExperience;
 
-    public Player(String name, Position position) {
+    public Charachter(String name, Position position) {
         this.level = 1;
         this.stats = new Attributes(Constants.ONE_HUNDRED, Constants.ONE_HUNDRED,
                 Constants.FIFTY, Constants.FIFTY);
@@ -52,7 +52,7 @@ public class Player implements Actor {
         this.neededExperience = Constants.ONE_HUNDRED;
     }
 
-    public Player(String name, Position position, int level, Stats stats, int experience, BackPack inventory, Weapon weapon) {
+    public Charachter(String name, Position position, int level, Stats stats, int experience, BackPack inventory, Weapon weapon) {
         this.name = name;
         this.position = position;
         this.level = level;
