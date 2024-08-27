@@ -1,0 +1,107 @@
+[
+  {
+    "username": "rminkov",
+    "password": "Alienkiller832",
+    "characters": {
+      "WARRIOR": {
+        "level": 1,
+        "stats": {
+          "maxHealth": 100,
+          "currentHealth": 100,
+          "maxMana": 100,
+          "currentMana": 100,
+          "attack": 50,
+          "defence": 50
+        },
+        "name": "radomir",
+        "inventory": {
+          "inventory": [],
+          "capacity": 10
+        },
+        "activeWeapon": {
+          "upgradePercent": 0.2,
+          "level": 1,
+          "attack": 40.0,
+          "name": "Dropnir Spear"
+        },
+        "position": {
+          "row": 2,
+          "column": 3
+        },
+        "isAlive": true,
+        "experience": 0,
+        "neededExperience": 100
+      }
+    }
+  },
+  {
+    "username": "nikola",
+    "password": "Alienkiller832",
+    "characters": {
+      "WARRIOR": {
+        "level": 1,
+        "stats": {
+          "maxHealth": 100,
+          "currentHealth": 100,
+          "maxMana": 100,
+          "currentMana": 100,
+          "attack": 50,
+          "defence": 50
+        },
+        "name": "radomir",
+        "inventory": {
+          "inventory": [],
+          "capacity": 10
+        },
+        "activeWeapon": {
+          "upgradePercent": 0.2,
+          "level": 1,
+          "attack": 40.0,
+          "name": "Dropnir Spear"
+        },
+        "position": {
+          "row": 2,
+          "column": 3
+        },
+        "isAlive": true,
+        "experience": 0,
+        "neededExperience": 100
+      }
+    }
+  },
+  {
+    "username": "MyPrecious",
+    "password": "Alienkiller832",
+    "characters": {
+      "WARRIOR": {
+        "level": 1,
+        "stats": {
+          "maxHealth": 100,
+          "currentHealth": 100,
+          "maxMana": 100,
+          "currentMana": 100,
+          "attack": 50,
+          "defence": 50
+        },
+        "name": "radomir",
+        "inventory": {
+          "inventory": [],
+          "capacity": 10
+        },
+        "activeWeapon": {
+          "upgradePercent": 0.2,
+          "level": 1,
+          "attack": 40.0,
+          "name": "Dropnir Spear"
+        },
+        "position": {
+          "row": 2,
+          "column": 3
+        },
+        "isAlive": true,
+        "experience": 0,
+        "neededExperience": 100
+      }
+    }
+  }
+]

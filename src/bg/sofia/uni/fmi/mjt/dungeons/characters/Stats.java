@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.dungeons.charachters;
+package bg.sofia.uni.fmi.mjt.dungeons.characters;
 
 public interface Stats {
     int getMaxHealth();

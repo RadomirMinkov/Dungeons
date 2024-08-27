@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.dungeons.charachters;
+package bg.sofia.uni.fmi.mjt.dungeons.characters;
 
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MinionDiedException;

@@ -2,7 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.maps;
 
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Matrix;
 
-public interface Map {
+public interface Board {
 
     Matrix getMap();
 

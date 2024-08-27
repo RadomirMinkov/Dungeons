@@ -1,6 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
-public class DeleteAccountCommand implements AccountAction {
+public class CreateUserCommand implements UserCommand {
     @Override
     public void execute() {
 

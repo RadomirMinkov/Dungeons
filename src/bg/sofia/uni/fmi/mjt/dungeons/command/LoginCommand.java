@@ -1,8 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
-public class LoginAccount implements AccountAction {
+public class LoginCommand implements UserCommand {
     @Override
     public void execute() {
-        
+
     }
 }

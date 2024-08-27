@@ -1,8 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.utility;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Constants {
@@ -21,6 +19,9 @@ public class Constants {
     public static final double ZERO_POINT_THREE = 0.3;
     public static final double ZERO_POINT_ONE = 0.1;
     public static final double LEVEL_UP_MULTIPLIER = 0.2;
+
+    public static final String JSON_CHARACTER_INFORMATION = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
+            "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\CharacterInformation.json";
 
     public static final List<String> WEAPONS_NAMES = Arrays.asList(
             "Serpent Reaver", "Thunder Storm", "Leviathan Axe", "Blade of Olympus", "Excalibur",

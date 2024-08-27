@@ -8,14 +8,18 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class JsonReader {
+public class GSonReadTest {
+    public static void main(String... args) {
 
-    void readUsersFromJson() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(Constants.JSON_CHARACTER_INFORMATION)) {
             Type userListType = new TypeToken<List<User>>() {
             }.getType();
-            GlobalVariables.allRegisteredUsers = gson.fromJson(reader, userListType);
+            List<User> users = gson.fromJson(reader, userListType);
+
+            for (User user: users) {
+                System.out.println(user.getUsername());
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

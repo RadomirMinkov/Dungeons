@@ -2,11 +2,11 @@ package bg.sofia.uni.fmi.mjt.dungeons.maps;
 
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Matrix;
 
-public class GameMap implements Map {
+public class GameBoard implements Board {
 
     private Matrix map;
 
-    public GameMap(int rows, int columns) {
+    public GameBoard(int rows, int columns) {
         map = new Matrix(rows, columns);
     }
 
