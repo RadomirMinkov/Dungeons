@@ -4,6 +4,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.characters.Character;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.user.Credentials;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 
 import com.google.gson.Gson;
@@ -31,10 +32,9 @@ public class GsonTest {
         List<User> users = new ArrayList<>();
         Map<ClassType, Character> r = new HashMap<>();
         r.put(ClassType.WARRIOR, me);
-        users.add(new User("rminkov", "Alienkiller832", r));
-        users.add(new User("nikola", "Alienkiller832", r));
-        users.add(new User("MyPrecious", "Alienkiller832", r));
-        String filePath = "C:\\Users\\HP\\IdeaProjects\\Dungeons\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\CharachterInformation.json";
+        users.add(new User(new Credentials("rminkov", "Alienkiller832"), r));
+        users.add(new User(new Credentials("nikola", "Alienkiller832"), r));
+        users.add(new User(new Credentials("MyPrecious", "Alienkiller832"), r));
         try (FileWriter writer = new FileWriter(Constants.JSON_CHARACTER_INFORMATION)) {
             Gson gson1 = new GsonBuilder().setPrettyPrinting().create();
             gson1.toJson(users, writer);

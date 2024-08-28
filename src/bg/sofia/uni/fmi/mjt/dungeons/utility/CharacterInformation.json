@@ -1,7 +1,9 @@
 [
   {
-    "username": "rminkov",
-    "password": "Alienkiller832",
+    "credentials": {
+      "username": "rminkov",
+      "password": "Alienkiller832"
+    },
     "characters": {
       "WARRIOR": {
         "level": 1,
@@ -22,7 +24,7 @@
           "upgradePercent": 0.2,
           "level": 1,
           "attack": 40.0,
-          "name": "Dropnir Spear"
+          "name": "Celestial Edge"
         },
         "position": {
           "row": 2,
@@ -35,8 +37,10 @@
     }
   },
   {
-    "username": "nikola",
-    "password": "Alienkiller832",
+    "credentials": {
+      "username": "nikola",
+      "password": "Alienkiller832"
+    },
     "characters": {
       "WARRIOR": {
         "level": 1,
@@ -57,7 +61,7 @@
           "upgradePercent": 0.2,
           "level": 1,
           "attack": 40.0,
-          "name": "Dropnir Spear"
+          "name": "Celestial Edge"
         },
         "position": {
           "row": 2,
@@ -70,8 +74,10 @@
     }
   },
   {
-    "username": "MyPrecious",
-    "password": "Alienkiller832",
+    "credentials": {
+      "username": "MyPrecious",
+      "password": "Alienkiller832"
+    },
     "characters": {
       "WARRIOR": {
         "level": 1,
@@ -92,7 +98,7 @@
           "upgradePercent": 0.2,
           "level": 1,
           "attack": 40.0,
-          "name": "Dropnir Spear"
+          "name": "Celestial Edge"
         },
         "position": {
           "row": 2,
