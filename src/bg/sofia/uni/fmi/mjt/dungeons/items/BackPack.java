@@ -1,17 +1,19 @@
-package bg.sofia.uni.fmi.mjt.dungeons.maps;
+package bg.sofia.uni.fmi.mjt.dungeons.items;
 
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ItemNotFoundException;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Inventory;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TEN;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.UPGRADE_PERCENTAGE;
+
 public class BackPack implements Inventory {
 
-    static final int TEN = 10;
-    static final double UPGRADE_PERCENTAGE = 0.2;
     private List<Pickable> inventory;
     private int capacity;
 

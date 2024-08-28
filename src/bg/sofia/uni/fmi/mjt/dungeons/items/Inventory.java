@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.dungeons.maps;
+package bg.sofia.uni.fmi.mjt.dungeons.items;
 
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;

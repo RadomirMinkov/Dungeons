@@ -15,7 +15,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Potion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
 
-import bg.sofia.uni.fmi.mjt.dungeons.maps.BackPack;
+import bg.sofia.uni.fmi.mjt.dungeons.items.BackPack;
 
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
@@ -44,7 +44,7 @@ public class Character implements Actor {
         this.position = position;
         this.inventory = new BackPack();
         String weaponName = Constants.WEAPONS_NAMES
-                .get(UsefulFunctions.genRandomNumber(0, Constants.WEAPONS_NAMES.size()));
+                .get(UsefulFunctions.getRandomNumber(0, Constants.WEAPONS_NAMES.size()));
         this.activeWeapon = new Weapon(weaponName);
         this.experience = 0;
         this.isAlive = true;
@@ -125,7 +125,7 @@ public class Character implements Actor {
             throw new PlayerDiedException(name + "died!");
         }
         stats.setHealth(Constants.FIFTY);
-        int index = UsefulFunctions.genRandomNumber(0, inventory.getSize());
+        int index = UsefulFunctions.getRandomNumber(0, inventory.getSize());
 
         Pickable droppedElement = inventory.removeElement(index);
 

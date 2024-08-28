@@ -34,10 +34,10 @@ public class Minion implements Actor {
         this.stats = new Attributes(Constants.SEVENTY, Constants.SEVENTY,
                 Constants.THIRTY, Constants.THIRTY);
         String weaponName = Constants.WEAPONS_NAMES
-                .get(UsefulFunctions.genRandomNumber(0, Constants.WEAPONS_NAMES.size()));
+                .get(UsefulFunctions.getRandomNumber(0, Constants.WEAPONS_NAMES.size()));
         this.weapon = new Weapon(weaponName);
         String spellName = Constants.SPELL_NAMES
-                .get(UsefulFunctions.genRandomNumber(0, Constants.SPELL_NAMES.size()));
+                .get(UsefulFunctions.getRandomNumber(0, Constants.SPELL_NAMES.size()));
         this.spell = new Spell(spellName);
         isAlive = true;
         this.experience = neededExperience * (level - 1);

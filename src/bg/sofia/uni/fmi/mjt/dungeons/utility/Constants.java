@@ -5,7 +5,10 @@ import java.util.List;
 
 public class Constants {
     public static final int ONE_HUNDRED = 100;
+    public static final int NINETY = 90;
+    public static final int EIGHTY = 80;
     public static final int SEVENTY = 70;
+    public static final int SIXTY = 60;
     public static final int FIFTY = 50;
     public static final int FORTY = 40;
     public static final int THIRTY = 30;
@@ -14,6 +17,7 @@ public class Constants {
     public static final int FIFE = 5;
     public static final double DEFENCE_MODIFIER = 0.2;
 
+    public static final double UPGRADE_PERCENTAGE = 0.2;
     public static final double ZERO_POINT_TWO = 0.2;
     public static final double ZERO_POINT_ZEROFIVE = 0.05;
     public static final double ZERO_POINT_THREE = 0.3;
