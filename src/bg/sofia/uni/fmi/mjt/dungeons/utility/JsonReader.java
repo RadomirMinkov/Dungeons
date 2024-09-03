@@ -7,15 +7,13 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.JSON_CHARACTER_INFORMATION;
-import static bg.sofia.uni.fmi.mjt.dungeons.utility.GlobalVariables.allRegisteredUsers;
-import static bg.sofia.uni.fmi.mjt.dungeons.utility.GlobalVariables.usersCredentials;
 
 public class JsonReader {
 
-    void readUsersFromJson() {
+    public void readUsersFromJson(List<User> allRegisteredUsers, Map<String, String> usersCredentials) {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(JSON_CHARACTER_INFORMATION)) {
             Type listType = new TypeToken<List<User>>() {

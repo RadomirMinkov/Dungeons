@@ -24,6 +24,8 @@ public class Constants {
     public static final double ZERO_POINT_ONE = 0.1;
     public static final double LEVEL_UP_MULTIPLIER = 0.2;
 
+    public static final int ROWS = 15;
+    public static final int COLUMNS = 10;
     public static final String JSON_CHARACTER_INFORMATION = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
             "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\CharacterInformation.json";
 

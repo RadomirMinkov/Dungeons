@@ -1,8 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 public interface UserCommand {
 
-    void execute() throws UserIsNotLoggedInException;
+    Message execute();
 }

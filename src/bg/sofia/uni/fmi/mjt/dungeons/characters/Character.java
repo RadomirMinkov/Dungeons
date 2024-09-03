@@ -161,7 +161,7 @@ public class Character implements Actor {
         return oldWeapon;
     }
 
-    public void usePotion(Potion potion) throws NotEnoughExperienceException,
+    public void usePotion(Potion potion) throws
             ItemNotFoundException, EmptyInventoryException {
 
         if (!inventory.getElements().contains(potion)) {

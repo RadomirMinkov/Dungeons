@@ -4,9 +4,13 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Matrix;
 
 public interface Board {
 
-    Matrix getMap();
+    public Matrix getBoard();
 
-    MapElement getTileType(int row, int column);
+    public MapElement getTileType(int row, int column);
 
-    void changeTile(int row, int column, MapElement type);
+    public void changeTile(int row, int column, MapElement type);
+
+    public void printBoard();
+
+    public StringBuilder boardAsString();
 }
