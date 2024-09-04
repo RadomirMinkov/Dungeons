@@ -33,8 +33,8 @@ public class GameEngine {
 
     public GameEngine() {
         activeUsers = new ArrayList<>();
-        jsonReader.readGameBoardFromJson(this.gameBoard);
-        jsonReader.readUsersFromJson(allRegisteredUsers, usersCredentials);
+        this.gameBoard = jsonReader.readGameBoardFromJson();
+        this.allRegisteredUsers = jsonReader.readUsersFromJson(usersCredentials);
     }
 
     public Board getGameBoard() {

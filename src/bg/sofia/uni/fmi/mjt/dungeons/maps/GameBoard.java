@@ -11,6 +11,10 @@ public class GameBoard implements Board {
         board = new Matrix(rows, columns);
     }
 
+    public GameBoard(Matrix board) {
+        this.board = board;
+    }
+
     @Override
     public Matrix getBoard() {
         return board;

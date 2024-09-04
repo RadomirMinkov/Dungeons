@@ -2,10 +2,13 @@ package bg.sofia.uni.fmi.mjt.dungeons.client;
 
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 

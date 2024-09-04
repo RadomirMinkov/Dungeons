@@ -1,4 +1,6 @@
 
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,5 +15,7 @@ public class Main {
         String test = "rado";
         String[] tes = test.split("\\s+");
         System.out.println(tes.length);
+        GameEngine gameEngine = new GameEngine();
+        System.out.println(gameEngine.getGameBoard().boardAsString());
     }
 }
