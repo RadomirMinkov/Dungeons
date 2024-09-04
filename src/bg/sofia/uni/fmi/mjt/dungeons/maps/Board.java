@@ -13,4 +13,5 @@ public interface Board {
     public void printBoard();
 
     public StringBuilder boardAsString();
+
 }

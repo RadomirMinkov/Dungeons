@@ -1,6 +1,14 @@
 package bg.sofia.uni.fmi.mjt.dungeons.server;
 
+import bg.sofia.uni.fmi.mjt.dungeons.command.interpreter.CommandInterpreter;
+import bg.sofia.uni.fmi.mjt.dungeons.user.User;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -14,6 +22,34 @@ public class Server {
     public static final int SERVER_PORT = 7777;
     private static final String SERVER_HOST = "localhost";
     private static final int BUFFER_SIZE = 1024;
+    private static final CommandInterpreter COMMAND_INTERPRETER;
+
+    static {
+        COMMAND_INTERPRETER = new CommandInterpreter();
+    }
+
+    private static Message readRequest(ByteBuffer buffer)
+            throws IOException, ClassNotFoundException {
+        buffer.flip();
+
+        byte[] data = new byte[buffer.remaining()];
+        buffer.get(data);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+
+        return (Message) ois.readObject();
+    }
+
+    private static void sendMessage(Message response, ByteBuffer byteBuffer, SocketChannel sc) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+        outputStream.writeObject(response);
+        outputStream.flush();
+        byte[] responseData = byteArrayOutputStream.toByteArray();
+        byteBuffer.clear();
+        byteBuffer.put(responseData);
+        byteBuffer.flip();
+        sc.write(byteBuffer);
+    }
 
     public static void main(String[] args) {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
@@ -46,8 +82,9 @@ public class Server {
                             sc.close();
                             continue;
                         }
-                        buffer.flip();
-                        sc.write(buffer);
+                        Message message = readRequest(buffer);
+                        Message response = COMMAND_INTERPRETER.executeCommand(message, new User());
+                        sendMessage(response, buffer, sc);
 
                     } else if (key.isAcceptable()) {
                         ServerSocketChannel sockChannel = (ServerSocketChannel) key.channel();
@@ -65,6 +102,8 @@ public class Server {
 
         } catch (IOException e) {
             throw new RuntimeException("There is a problem with the server socket", e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -15,6 +15,9 @@ public class Constants {
     public static final int TWENTY = 20;
     public static final int TEN = 10;
     public static final int FIFE = 5;
+    public static final int THREE = 3;
+    public static final int TWO = 2;
+    public static final int ONE = 1;
     public static final double DEFENCE_MODIFIER = 0.2;
 
     public static final double UPGRADE_PERCENTAGE = 0.2;
@@ -24,10 +27,12 @@ public class Constants {
     public static final double ZERO_POINT_ONE = 0.1;
     public static final double LEVEL_UP_MULTIPLIER = 0.2;
 
-    public static final int ROWS = 15;
-    public static final int COLUMNS = 10;
+    public static final int ROWS = 7;
+    public static final int COLUMNS = 12;
     public static final String JSON_CHARACTER_INFORMATION = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
             "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\CharacterInformation.json";
+    public static final String JSON_GAME_BOARD = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
+            "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\GameBoard.json";
 
     public static final List<String> WEAPONS_NAMES = Arrays.asList(
             "Serpent Reaver", "Thunder Storm", "Leviathan Axe", "Blade of Olympus", "Excalibur",

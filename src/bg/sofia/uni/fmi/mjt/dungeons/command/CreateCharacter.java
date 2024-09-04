@@ -1,24 +1,23 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
+import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 public class CreateCharacter implements UserCommand {
     GameEngine gameEngine;
-    String username;
-    String password;
+    User user;
+    ClassType classType;
 
-    public CreateCharacter(GameEngine gameEngine, String username, String password) {
-        if (gameEngine == null || username == null || password == null) {
-            throw new IllegalArgumentException("The given arguments can't be null!");
-        }
+    public CreateCharacter(GameEngine gameEngine, User user, ClassType classType) {
         this.gameEngine = gameEngine;
-        this.username = username;
-        this.password = password;
+        this.user = user;
+        this.classType = classType;
     }
 
     @Override
     public Message execute() {
-        return gameEngine.createUser(username, password);
+        return gameEngine.createCharacter(user, classType);
     }
 }

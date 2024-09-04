@@ -7,6 +7,7 @@ public class GameBoard implements Board {
     private Matrix board;
 
     public GameBoard(int rows, int columns) {
+
         board = new Matrix(rows, columns);
     }
 
