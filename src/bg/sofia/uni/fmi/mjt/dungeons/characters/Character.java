@@ -152,6 +152,11 @@ public class Character implements Actor {
         return position;
     }
 
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public Weapon equipWeapon(Weapon weapon) throws NotEnoughExperienceException {
         if (level < weapon.getLevel()) {
             throw new NotEnoughExperienceException("The level of the player is not big enough!");

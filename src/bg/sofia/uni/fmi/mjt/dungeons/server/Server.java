@@ -83,7 +83,7 @@ public class Server {
                             continue;
                         }
                         Message message = readRequest(buffer);
-                        Message response = COMMAND_INTERPRETER.executeCommand(message, new User());
+                        Message response = COMMAND_INTERPRETER.executeCommand(message, key);
                         sendMessage(response, buffer, sc);
 
                     } else if (key.isAcceptable()) {

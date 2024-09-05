@@ -110,6 +110,11 @@ public class Minion implements Actor {
     }
 
     @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
     public void takeDamage(double damage) throws MissAttackException, MinionDiedException {
         double initialDamage = damage - stats.getDefence() * Constants.DEFENCE_MODIFIER;
         if (initialDamage <= 0) {

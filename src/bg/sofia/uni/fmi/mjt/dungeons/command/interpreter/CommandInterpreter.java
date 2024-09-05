@@ -16,6 +16,9 @@ import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
+import java.nio.channels.SelectionKey;
+
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.FOUR;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ONE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.THREE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TWO;
@@ -31,44 +34,45 @@ public class CommandInterpreter {
         this.gameEngine = gameEngine;
     }
 
-    public UserCommand intepretate(Message message, User user) throws UnknownCommandException {
+    public UserCommand intepretate(Message message, SelectionKey key) throws UnknownCommandException {
         String[] words = message.message().split("\\s+");
         if (words.length == 0) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
             return switch (words[0]) {
                 case "map" -> new ShowMapCommand(gameEngine, gameEngine.getGameBoard());
-                case "logut" -> new LogoutCommand(gameEngine, new User());
+                case "logout" -> new LogoutCommand(gameEngine, key);
                 default -> throw new UnknownCommandException("Unknown command!");
             };
-        } else if (TWO == words.length && words[0].equals("change")) {
-            return new ChangeCharacterCommand(gameEngine, user, ClassType.valueOf(words[2]));
+        } else if (TWO == words.length && words[0].equals("move")) {
+            return new MoveCommand(gameEngine, gameEngine.getGameBoard(), key);
         } else if (THREE == words.length) {
             return switch (words[0]) {
-                case "login" -> new LoginCommand(gameEngine, words[1], words[2]);
-                case "move" -> new MoveCommand(gameEngine, gameEngine.getGameBoard());
-                case "create" -> switch (words[1]) {
-                    case "character" -> new CreateCharacter(gameEngine, user, ClassType.valueOf(words[2]));
-                    case "user" -> new CreateUserCommand(gameEngine, words[1], words[2]);
-                    default -> throw new UnknownCommandException("Unknown command!");
-                };
-                case "delete" -> switch (words[1]) {
-                    case "character" -> new DeleteCharacter(gameEngine, user, ClassType.valueOf(words[2]));
-                    case "user" -> new DeleteUserCommand(gameEngine, words[1], words[2]);
-                    default -> throw new UnknownCommandException("Unknown command!");
-                };
+                case "change", "choose" ->
+                        new ChangeCharacterCommand(gameEngine, (User) key.attachment(),
+                                ClassType.fromString(words[2]), gameEngine.getGameBoard());
+                case "login" -> new LoginCommand(gameEngine, words[1], words[TWO], key);
+                case "create" -> new CreateCharacter(gameEngine, (User) key.attachment(), ClassType.valueOf(words[2]));
+                case "delete" -> new DeleteCharacter(gameEngine, (User) key.attachment(), ClassType.valueOf(words[2]));
                 default -> throw new UnknownCommandException("Unknown command!");
             };
+        } else if (FOUR == words.length && words[1].equals("user")) {
+            return switch (words[0]) {
+                case "create" -> new CreateUserCommand(gameEngine, words[TWO], words[THREE], key);
+                case "delete" -> new DeleteUserCommand(gameEngine, words[TWO], words[THREE], key);
+                default -> throw new UnknownCommandException("Unknown command!");
+            };
+        } else {
+            throw new UnknownCommandException("Unknown command!");
         }
-        throw new UnknownCommandException("Unknown command!");
     }
 
-    public Message executeCommand(Message message, User user) {
+    public Message executeCommand(Message message, SelectionKey key) {
         UserCommand command;
         try {
-            command = intepretate(message, user);
+            command = intepretate(message, key);
 
-        } catch (UnknownCommandException e) {
+        } catch (UnknownCommandException | IllegalArgumentException e) {
             return new Message(e.getMessage());
         }
         return command.execute();

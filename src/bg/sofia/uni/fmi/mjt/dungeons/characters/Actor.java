@@ -30,6 +30,8 @@ public interface Actor {
 
     Position getPosition();
 
+    void setPosition(Position position);
+
     void takeDamage(double damage) throws MissAttackException, PlayerDiedAndResurrectedException,
             PlayerDiedException, EmptyInventoryException, MinionDiedException;
 

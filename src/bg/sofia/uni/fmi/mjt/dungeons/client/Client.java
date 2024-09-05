@@ -25,7 +25,7 @@ public class Client {
             move <direction>
             create character <class>
             delete character <class>
-            change character <class>
+            choose/change character <class>
             create user <username> <password>
             delete user <username> <password>
             exit""";
@@ -76,7 +76,7 @@ public class Client {
                 Message request = new Message(message);
                 sendMessage(request, socketChannel);
                 Message reply = receiveMessage(socketChannel);
-                System.out.println(reply);
+                System.out.println(reply.message());
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("There is a problem with the network communication", e);

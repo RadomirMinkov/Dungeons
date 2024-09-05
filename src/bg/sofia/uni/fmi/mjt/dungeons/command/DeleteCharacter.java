@@ -13,7 +13,10 @@ public class DeleteCharacter implements UserCommand {
     User user;
 
     public DeleteCharacter(GameEngine gameEngine, User user, ClassType classType) {
-        if (gameEngine == null || user == null || classType == null) {
+        if (user == null) {
+            throw new IllegalArgumentException("You are not logged in!");
+        }
+        if (gameEngine == null || classType == null) {
             throw new IllegalArgumentException("The arguments can't be null!");
         }
         this.gameEngine = gameEngine;

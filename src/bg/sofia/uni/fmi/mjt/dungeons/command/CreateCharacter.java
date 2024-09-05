@@ -5,12 +5,17 @@ import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
+import java.nio.channels.SelectionKey;
+
 public class CreateCharacter implements UserCommand {
-    GameEngine gameEngine;
-    User user;
-    ClassType classType;
+    private GameEngine gameEngine;
+    private User user;
+    private ClassType classType;
 
     public CreateCharacter(GameEngine gameEngine, User user, ClassType classType) {
+        if (gameEngine == null || user == null || classType == null) {
+            throw new IllegalArgumentException("The given arguments can't be null!");
+        }
         this.gameEngine = gameEngine;
         this.user = user;
         this.classType = classType;
