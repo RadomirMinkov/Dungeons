@@ -41,6 +41,11 @@ public class Minion implements Actor {
     private Position position;
     private int attackPowerUps;
     private int defencePowerUps;
+    private boolean isFighting;
+
+    {
+        isFighting = false;
+    }
 
     public Minion(int level, Position position) throws NotEnoughExperienceException {
         this.level = level;

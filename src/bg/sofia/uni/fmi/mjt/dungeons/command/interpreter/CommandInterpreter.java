@@ -1,7 +1,27 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command.interpreter;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
-import bg.sofia.uni.fmi.mjt.dungeons.command.*;
+import bg.sofia.uni.fmi.mjt.dungeons.command.AcceptItemCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.AttackCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.ChangeCharacterCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.CreateCharacter;
+import bg.sofia.uni.fmi.mjt.dungeons.command.CreateUserCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.DefendCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.DeleteCharacter;
+import bg.sofia.uni.fmi.mjt.dungeons.command.DeleteUserCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.DoNothingCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.FightCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.LoginCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.LogoutCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.MoveCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.OfferCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.PickUpCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.PowerUpCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.PutDownCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.ShowMapCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.TradeCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.UsePotionCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.UserCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
@@ -63,7 +83,7 @@ public class CommandInterpreter {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
             return switch (words[0]) {
-                case "trade" -> new TradeCommand(gameEngine, key);
+                case "trade" -> new TradeCommand();
                 case "fight" -> new FightCommand();
                 case "nothing" -> new DoNothingCommand();
                 default -> throw new UnknownCommandException("Unknown command!");
@@ -91,9 +111,9 @@ public class CommandInterpreter {
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length && words[0].equals("pick") && words[1].equals("up")) {
-            
+            return new PickUpCommand();
         } else if (TWO == words.length && words[0].equals("put") && words[1].equals("down")) {
-
+            return new PutDownCommand();
         }
         throw new UnknownCommandException("Unknown command!");
     }
