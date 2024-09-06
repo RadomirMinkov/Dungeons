@@ -1,8 +1,8 @@
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
-import bg.sofia.uni.fmi.mjt.dungeons.command.UserCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.interpreter.CommandInterpreter;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.MapElement;
 import bg.sofia.uni.fmi.mjt.dungeons.user.Credentials;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
@@ -30,14 +30,15 @@ public class Main {
         mockUser.createCharacter(ClassType.WARRIOR);
         when(mockKey.attachment()).thenReturn(mockUser);
 
-        Message mockMessage = new Message("change character warrior");
+        Message mockMessage = new Message("change character warrior", Mode.NORMAL);
         try {
             CommandInterpreter interpreter = new CommandInterpreter();
-            interpreter.executeCommand(new Message("login rminkov Alienkiller832"), mockKey);
-            System.out.println(interpreter.executeCommand(new Message("change character warrior"), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("map"), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("move up"), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("map"), mockKey).message());
+            interpreter.executeCommand(new Message("login rminkov Alienkiller832", Mode.NORMAL), mockKey);
+            System.out.println(interpreter.executeCommand(
+                    new Message("change character warrior", Mode.NORMAL), mockKey).message());
+            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL), mockKey).message());
+            System.out.println(interpreter.executeCommand(new Message("move up", Mode.NORMAL), mockKey).message());
+            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL), mockKey).message());
 
             PriorityQueue<CustomPair> pr = new PriorityQueue<>();
             pr.add(new CustomPair(MapElement.OBSTACLE, null));

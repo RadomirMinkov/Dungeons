@@ -74,7 +74,6 @@ public class NIOServer {
         String messageFromClient = new String(buffer.array(), 0, bytesRead);
         System.out.println("Received from client: " + messageFromClient);
 
-        // Echo the message back to the client
         key.interestOps(SelectionKey.OP_WRITE);
         key.attach(messageFromClient);
     }

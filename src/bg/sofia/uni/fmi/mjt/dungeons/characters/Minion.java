@@ -4,6 +4,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MinionDiedException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MissAttackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Item;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Spell;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
@@ -118,9 +119,9 @@ public class Minion implements Actor {
         try {
             AtomicInteger damageTaken = new AtomicInteger(0);
             enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
-            return new Message("Minion attacked you for " + damageTaken);
+            return new Message("Minion attacked you for " + damageTaken, Mode.BATTLE);
         } catch (Exception e) {
-            return new Message(e.getMessage());
+            return new Message(e.getMessage(), Mode.BATTLE);
         }
     }
 
@@ -199,14 +200,14 @@ public class Minion implements Actor {
     private Message defend() {
         stats.adjustDefence(DEFENCE_MODIFIER);
         this.defencePowerUps += ONE;
-        return new Message("Minion choose to defend himself for the next received attack!");
+        return new Message("Minion choose to defend himself for the next received attack!", Mode.BATTLE);
     }
 
     private Message powerUp() {
         stats.adjustAttack(ATTACK_MODIFIER);
         this.attackPowerUps += TWO;
         stats.adjustCurrentMana(-THIRTY);
-        return new Message("Minion choose to power up for the next attack!");
+        return new Message("Minion choose to power up for the next attack!", Mode.BATTLE);
     }
 
 }

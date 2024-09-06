@@ -1,7 +1,9 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
@@ -22,8 +24,8 @@ public class LogoutCommand implements UserCommand {
     public Message execute() {
         try {
             return gameEngine.logout(key);
-        } catch (UserIsNotLoggedInException e) {
-            return new Message(e.getMessage());
+        } catch (UserIsNotLoggedInException | MapElementDoesNotExistException e) {
+            return new Message(e.getMessage(), Mode.NORMAL);
         }
     }
 }

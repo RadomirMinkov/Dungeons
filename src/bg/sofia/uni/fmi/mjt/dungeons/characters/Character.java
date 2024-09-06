@@ -8,6 +8,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedAndResurrectedException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedException;
 
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Item;
 import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
@@ -151,9 +152,9 @@ public class Character implements Actor {
         try {
             AtomicInteger damageTaken = new AtomicInteger(0);
             enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
-            return new Message("You attacked the enemy for " + damageTaken);
+            return new Message("You attacked the enemy for " + damageTaken, Mode.BATTLE);
         } catch (Exception e) {
-            return new Message(e.getMessage());
+            return new Message(e.getMessage(), Mode.BATTLE);
         }
     }
 

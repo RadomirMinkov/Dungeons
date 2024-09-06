@@ -4,6 +4,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
@@ -28,7 +29,7 @@ public class MoveCommand implements UserCommand {
         try {
             return gameEngine.movePlayer((User) key.attachment(), direction);
         } catch (UnknownCommandException | MapElementDoesNotExistException | MapElementAlreadyExistsException e) {
-            return new Message(e.getMessage());
+            return new Message(e.getMessage(), Mode.NORMAL);
         }
     }
 }

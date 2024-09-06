@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.client;
 
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.io.ByteArrayInputStream;
@@ -75,7 +76,7 @@ public class Client {
                     System.out.println(INSTRUCTIONS);
                     continue;
                 }
-                Message request = new Message(message);
+                Message request = new Message(message, Mode.NORMAL);
                 sendMessage(request, socketChannel);
                 Message reply = receiveMessage(socketChannel);
                 System.out.println(reply.message());

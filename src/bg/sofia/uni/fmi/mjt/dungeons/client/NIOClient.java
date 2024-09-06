@@ -1,6 +1,13 @@
 package bg.sofia.uni.fmi.mjt.dungeons.client;
 
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.Selector;
@@ -18,6 +25,7 @@ public class NIOClient {
     private SocketChannel clientChannel;
     private ByteBuffer buffer;
 
+    private static Mode currentMode;
     private static final int BUFFER_SIZE = 1024;
     private boolean running = true;
     static final String NORMAL_MODE_INSTRUCTIONS = """
@@ -37,17 +45,24 @@ public class NIOClient {
             attack
             defend
             power up
-            use potion <potion-type> { health, mana }
-            exit""";
+            use potion <potion-type> { health, mana }""";
     static final String TRADING_MODE_INSTRUCTIONS = """
-            share <item>
-            accept trade
+            offer <item>
             accept item
             exit""";
     static final String TREASURE_MODE_INSTRUCTIONS = """
             pick up
             put down
             exit""";
+    static final String CHOOSE_MODE_INSTRUCTIONS = """
+            trade
+            fight
+            nothing
+            exit""";
+
+    static {
+        currentMode = Mode.NORMAL;
+    }
 
     public NIOClient(String host, int port) throws IOException {
         selector = Selector.open();
@@ -64,14 +79,11 @@ public class NIOClient {
 
         while (running) {
             int keyNumber = selector.select();
-            System.out.println(keyNumber);
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
             Iterator<SelectionKey> keyIterator = selectedKeys.iterator();
-            System.out.println("Tuk sym");
             while (keyIterator.hasNext()) {
                 SelectionKey key = keyIterator.next();
                 keyIterator.remove();
-                System.out.println("Tuk sym");
                 if (key.isConnectable()) {
                     handleConnect(key);
                 } else if (key.isWritable()) {
@@ -108,14 +120,22 @@ public class NIOClient {
 
     private void handleWrite(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
-        System.out.println("pisha");
         String message = (String) key.attachment();
 
-        ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
-        channel.write(buffer);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+        outputStream.writeObject(new Message(message, Mode.NORMAL));
+        outputStream.flush();
 
-        System.out.println("Message sent to server: " + message);
+        byte[] serializedData = byteArrayOutputStream.toByteArray();
 
+        ByteBuffer buffer = ByteBuffer.allocate(serializedData.length);
+        buffer.put(serializedData);
+        buffer.flip();
+
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
         key.interestOps(SelectionKey.OP_READ);
     }
 
@@ -144,8 +164,31 @@ public class NIOClient {
         }
 
         buffer.flip();
-        String messageFromServer = new String(buffer.array(), 0, bytesRead);
-        System.out.println("Received from server: " + messageFromServer);
+        byte[] data = new byte[buffer.remaining()];
+        buffer.get(data);
+        ObjectInputStream out = new ObjectInputStream(new ByteArrayInputStream(data));
+        try {
+            Message message = (Message) out.readObject();
+            System.out.println(message.message());
+            if (currentMode != message.mode()) {
+                System.out.println("You entered " + message.mode());
+                currentMode = message.mode();
+                printModeInstructions(message.mode());
+            }
+            System.out.print("Enter command: ");
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void printModeInstructions(Mode mode) {
+        switch (mode) {
+            case NORMAL -> System.out.println(NORMAL_MODE_INSTRUCTIONS);
+            case TRADE -> System.out.println(TRADING_MODE_INSTRUCTIONS);
+            case BATTLE -> System.out.println(BATTLE_MODE_INSTRUCTIONS);
+            case TREASURE -> System.out.println(TREASURE_MODE_INSTRUCTIONS);
+            case CHOOSE -> System.out.println(CHOOSE_MODE_INSTRUCTIONS);
+        }
     }
 
     public static void main(String[] args) {

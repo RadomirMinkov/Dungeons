@@ -3,6 +3,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.command;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
@@ -29,7 +30,7 @@ public class DeleteCharacter implements UserCommand {
         try {
             return gameEngine.deleteCharacter(user, classType);
         } catch (NoSuchCharacterException e) {
-            return new Message(e.getMessage());
+            return new Message(e.getMessage(), Mode.NORMAL);
         }
     }
 }

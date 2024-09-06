@@ -20,9 +20,19 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.JsonWriter;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.nio.channels.SelectionKey;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Random;
 
-import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.*;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.COLUMNS;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.EMPTY_STRING;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.MAX_MINIONS_NUMBER;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ONE;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ROWS;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TWO;
 
 public class GameEngine {
 
@@ -69,7 +79,7 @@ public class GameEngine {
             throw new ThereIsNoSuchUserException("No such user exist!");
         }
         if (!usersCredentials.get(username).equals(password)) {
-            return new Message("Wrong password!");
+            return new Message("Wrong password!", Mode.NORMAL);
         }
         User user = (User) key.attachment();
         if (!user.getPassword().equals(password) || !user.getUsername().equals(username)) {
@@ -79,29 +89,29 @@ public class GameEngine {
         allRegisteredUsers.remove(user);
         key.attach(null);
         keys.remove(key);
-        return new Message("Successful deleting of a user!");
+        return new Message("Successful deleting of a user!", Mode.NORMAL);
     }
 
     public Message createUser(String username, String password, SelectionKey key) {
         if (usersCredentials.get(username) != null) {
-            return new Message("User with that username already exists!");
+            return new Message("User with that username already exists!", Mode.NORMAL);
         }
         User newUser = new User(new Credentials(username, password), new HashMap<>());
         allRegisteredUsers.add(newUser);
         usersCredentials.put(username, password);
         return new Message("Successful creation of a user! Hope that you will be having a great time!"
-                + login(username, password, key).message());
+                + login(username, password, key).message(), Mode.NORMAL);
     }
 
     public Message login(String username, String password, SelectionKey key) {
         if (usersCredentials.get(username) == null) {
-            return new Message("There is no such registered user!");
+            return new Message("There is no such registered user!", Mode.NORMAL);
         }
         if (!usersCredentials.get(username).equals(password)) {
-            return new Message("Password is wrong! Try again!");
+            return new Message("Password is wrong! Try again!", Mode.NORMAL);
         }
         if (activeCredentials.get(username) != null) {
-            return new Message("This user is already logged in!");
+            return new Message("This user is already logged in!", Mode.NORMAL);
         }
         for (User user : allRegisteredUsers) {
             if (user.getUsername().equals(username)) {
@@ -112,16 +122,17 @@ public class GameEngine {
                 keys.add(key);
             }
         }
-        return new Message("Successful login into your account");
+        return new Message("Successful login into your account", Mode.NORMAL);
     }
 
-    public Message logout(SelectionKey key) throws UserIsNotLoggedInException {
+    public Message logout(SelectionKey key) throws UserIsNotLoggedInException, MapElementDoesNotExistException {
         User user = (User) key.attachment();
         assertUserIsLogged(user);
         activeUsers.remove(user);
         key.attach(null);
         loggedPlayers--;
-        return new Message("You logged out successfully!");
+        clearMap(user);
+        return new Message("You logged out successfully!", Mode.NORMAL);
     }
 
     public void assertUserIsLogged(User user) throws UserIsNotLoggedInException {
@@ -155,10 +166,10 @@ public class GameEngine {
             default -> throw new UnknownCommandException("Unknown command!");
         }
         if (column < 0 || column >= COLUMNS && row < 0 || row >= ROWS) {
-            return new Message("Not possible to move cause you will go out of the map!");
+            return new Message("Not possible to move cause you will go out of the map!", Mode.NORMAL);
         }
         if (gameBoard.getTile(row, column).contains(MapElement.OBSTACLE)) {
-            return new Message("There is wall that prevents your movement!");
+            return new Message("There is wall that prevents your movement!", Mode.NORMAL);
         }
         gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                 user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.PLAYER);
@@ -166,27 +177,28 @@ public class GameEngine {
         user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column))
         ;
         gameBoard.addElementToTile(row, column, MapElement.PLAYER);
-        return new Message("You moved " + direction + "! " + inspectTile(row, column));
+        Message message = inspectTile(row, column);
+        return new Message("You moved " + direction + "! " + message.message(), message.mode());
     }
 
-    private String inspectTile(int row, int column) {
+    private Message inspectTile(int row, int column) {
         PriorityQueue<MapElement> tile = gameBoard.getTile(row, column);
         if (TWO == tile.size() || ONE == tile.size()) {
-            return EMPTY_STRING;
+            return new Message(EMPTY_STRING, Mode.NORMAL);
         }
         if (tile.contains(MapElement.MINION)) {
-            return "Starting battle with a minion of the evil!";
+            return new Message("Starting battle with a minion of the evil!", Mode.BATTLE);
         }
         long players = tile.stream()
                 .filter(element -> element.equals(MapElement.PLAYER))
                 .count();
         if (players > 1) {
-            return "Initiate trade or battle with player!";
+            return new Message("Initiate trade or battle with player!", Mode.CHOOSE);
         }
         if (tile.contains(MapElement.TREASURE)) {
-            return "You stumbled upon a treasure! Do you want to pick it?";
+            return new Message("You stumbled upon a treasure! Do you want to pick it?", Mode.TREASURE);
         }
-        return EMPTY_STRING;
+        return new Message(EMPTY_STRING, Mode.NORMAL);
     }
 
     private boolean availableTile(int row, int column) {
@@ -225,5 +237,12 @@ public class GameEngine {
                     minion.getPosition().getColumn());
             currentMinionsNumber++;
         }
+    }
+
+    private void clearMap(User user) throws MapElementDoesNotExistException {
+        gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
+                user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(),
+                MapElement.PLAYER);
+
     }
 }

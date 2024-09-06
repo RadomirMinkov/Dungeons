@@ -2,6 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.command;
 
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
+import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.nio.channels.SelectionKey;
@@ -27,7 +28,7 @@ public class DeleteUserCommand implements UserCommand {
         try {
             return gameEngine.deleteUser(username, password, key);
         } catch (ThereIsNoSuchUserException e) {
-            return new Message(e.getMessage());
+            return new Message(e.getMessage(), Mode.NORMAL);
         }
     }
 }

@@ -17,9 +17,9 @@ public class ConsoleInputHandler implements Runnable {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         System.out.println(NORMAL_MODE_INSTRUCTIONS);
+        System.out.print("Enter command: ");
         while (true) {
 
-            System.out.print("Enter command: ");
             String message = scanner.nextLine();
 
             if (message.equalsIgnoreCase("exit")) {
@@ -27,7 +27,7 @@ public class ConsoleInputHandler implements Runnable {
                     client.closeConnection();
                     break;
                 } catch (IOException e) {
-                    System.out.println("You closed connection!");
+                    System.out.println(e.getMessage());
                 }
             } else {
                 try {

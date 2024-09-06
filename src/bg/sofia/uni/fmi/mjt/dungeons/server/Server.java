@@ -40,7 +40,6 @@ public class Server {
         byte[] data = new byte[buffer.remaining()];
         buffer.get(data);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-
         return (Message) ois.readObject();
     }
 
