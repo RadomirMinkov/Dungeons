@@ -14,17 +14,21 @@ public class Constants {
     public static final int THIRTY = 30;
     public static final int TWENTY = 20;
     public static final int FIFTEEN = 15;
+    public static final int MAX_MINIONS_NUMBER = 10;
+    public static final int MAX_TREASURES_NUMBER = 7;
     public static final int TEN = 10;
     public static final int FIFE = 5;
     public static final int FOUR = 4;
     public static final int THREE = 3;
     public static final int TWO = 2;
     public static final int ONE = 1;
-    public static final double DEFENCE_MODIFIER = 0.2;
+    public static final int DEFENCE_MODIFIER = 5;
+    public static final int ATTACK_MODIFIER = 5;
 
     public static final double UPGRADE_PERCENTAGE = 0.2;
     public static final double ZERO_POINT_TWO = 0.2;
     public static final double ZERO_POINT_ZEROFIVE = 0.05;
+    public static final double ZERO_POINT_FIVE = 0.5;
     public static final double ZERO_POINT_THREE = 0.3;
     public static final double ZERO_POINT_ONE = 0.1;
     public static final double LEVEL_UP_MULTIPLIER = 0.2;

@@ -2,9 +2,10 @@ package bg.sofia.uni.fmi.mjt.dungeons.maps;
 
 public enum MapElement {
     OBSTACLE(1, "X"),
-    TREASURE(4, "\t&#9670"),
-    MINION(3, "E"),
+
     PLAYER(2, "P"),
+    MINION(3, "E"),
+    TREASURE(4, "\t&#9670"),
     FREE_SPACE(5, "O");
 
     private final int priority;

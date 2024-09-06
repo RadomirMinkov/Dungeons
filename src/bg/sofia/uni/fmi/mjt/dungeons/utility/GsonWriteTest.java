@@ -2,6 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.utility;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Character;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Board;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.GameBoard;
@@ -43,33 +44,36 @@ public class GsonWriteTest {
         users.add(new User(new Credentials("MyPrecious", "Alienkiller832"), r));
 
         Board gameBoard = new GameBoard(ROWS, COLUMNS);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 0,2);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 0,3);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 0,8);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 1,2);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 2,2);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 2,5);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 2,6);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 1,7);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 1,8);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 1,9);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 3,0);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 3,1);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 3,6);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 4,8);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 4,5);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 4,0);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 4, 9);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 4,11);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 5,10);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 5,1);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 5,6);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 5,7);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 5,8);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 6,2);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 6,3);
-        gameBoard.getBoard().setElement(MapElement.OBSTACLE, 6,4);
-
+        try {
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 0, 2);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 0, 3);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 0, 8);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 1, 2);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 2, 2);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 2, 5);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 2, 6);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 1, 7);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 1, 8);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 1, 9);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 3, 0);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 3, 1);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 3, 6);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 4, 8);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 4, 5);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 4, 0);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 4, 9);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 4, 11);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 5, 10);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 5, 1);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 5, 6);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 5, 7);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 5, 8);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 6, 2);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 6, 3);
+            gameBoard.getBoard().addElement(MapElement.OBSTACLE, 6, 4);
+        } catch (MapElementAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+        }
         try (FileWriter writer = new FileWriter(Constants.JSON_GAME_BOARD)) {
             Gson gson1 = new GsonBuilder().setPrettyPrinting().create();
             gson1.toJson(gameBoard, writer);

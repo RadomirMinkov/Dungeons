@@ -1,6 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.command;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Board;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
@@ -28,6 +30,10 @@ public class ChangeCharacterCommand implements UserCommand {
 
     @Override
     public Message execute() {
-        return gameEngine.changeCharacter(user, classType, gameBoard);
+        try {
+            return gameEngine.changeCharacter(user, classType, gameBoard);
+        } catch (MapElementAlreadyExistsException | MapElementDoesNotExistException e) {
+            return new Message(e.getMessage());
+        }
     }
 }

@@ -10,6 +10,9 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedException;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Item;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public interface Actor {
 
@@ -25,14 +28,13 @@ public interface Actor {
 
     boolean getIsAlive();
 
-    void attack(Item item, Actor actor) throws MissAttackException, PlayerDiedAndResurrectedException,
-            EmptyInventoryException, PlayerDiedException, MinionDiedException;
+    Message attack(Item item, Actor actor);
 
     Position getPosition();
 
     void setPosition(Position position);
 
-    void takeDamage(double damage) throws MissAttackException, PlayerDiedAndResurrectedException,
-            PlayerDiedException, EmptyInventoryException, MinionDiedException;
+    void takeDamage(double damage, AtomicInteger damageTaken) throws MissAttackException, PlayerDiedAndResurrectedException,
+            PlayerDiedException, MinionDiedException, EmptyInventoryException;
 
 }

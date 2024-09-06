@@ -18,7 +18,7 @@ public class GSonReadTest {
 
             for (int i = 0; i < ROWS; i++) {
                 for (int j = 0; j < COLUMNS; j++) {
-                    System.out.print(gameBoard.getTileType(i, j) + " ");
+                    System.out.print(gameBoard.getTile(i, j).peek() + " ");
                 }
                 System.out.println();
             }

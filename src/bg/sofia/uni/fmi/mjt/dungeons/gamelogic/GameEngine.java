@@ -1,6 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
@@ -14,7 +16,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.JsonReader;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.JsonWriter;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
-import javax.naming.OperationNotSupportedException;
 import java.nio.channels.SelectionKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,12 @@ public class GameEngine {
     Board gameBoard;
     JsonReader jsonReader;
     JsonWriter jsonWriter;
+
+    public static int loggedPlayers;
+
+    static {
+        loggedPlayers = 0;
+    }
 
     {
         this.jsonReader = new JsonReader();
@@ -87,6 +94,7 @@ public class GameEngine {
         for (User user : allRegisteredUsers) {
             if (user.getUsername().equals(username)) {
                 activeUsers.add(user);
+                loggedPlayers++;
                 key.attach(user);
             }
         }
@@ -98,6 +106,7 @@ public class GameEngine {
         assertUserIsLogged(user);
         activeUsers.remove(user);
         key.attach(null);
+        loggedPlayers--;
         return new Message("You logged out successfully!");
     }
 
@@ -111,7 +120,8 @@ public class GameEngine {
         return user.deleteCharacter(classType);
     }
 
-    public Message changeCharacter(User user, ClassType classType, Board gameBoard) {
+    public Message changeCharacter(User user, ClassType classType, Board gameBoard)
+            throws MapElementAlreadyExistsException, MapElementDoesNotExistException {
         return user.changeCharacter(classType, gameBoard);
     }
 
@@ -119,22 +129,27 @@ public class GameEngine {
         return user.createCharacter(classType);
     }
 
-    public Message movePlayer(User user, ClassType type, String direction) throws UnknownCommandException {
-        int column = user.getCharacter(type).getPosition().getColumn();
-        int row = user.getCharacter(type).getPosition().getRow();
+    public Message movePlayer(User user, String direction)
+            throws UnknownCommandException, MapElementDoesNotExistException, MapElementAlreadyExistsException {
+        int column = user.getCharacter(user.getActiveCharacter()).getPosition().getColumn();
+        int row = user.getCharacter(user.getActiveCharacter()).getPosition().getRow();
         switch (direction) {
-            case "up" -> column += 1;
-            case "down" -> column -= 1;
-            case "right" -> row += 1;
-            case "left" -> row -= 1;
+            case "up" -> row -= 1;
+            case "down" -> row += 1;
+            case "right" -> column += 1;
+            case "left" -> column -= 1;
             default -> throw new UnknownCommandException("Unknown command!");
         }
         if (column < 0 || column >= COLUMNS && row < 0 || row >= ROWS) {
             return new Message("Not possible to move cause you will go out of the map!");
         }
-        if (gameBoard.getTileType(row, column).equals(MapElement.OBSTACLE)) {
+        if (gameBoard.getTile(row, column).contains(MapElement.OBSTACLE)) {
             return new Message("There is wall that prevents your movement!");
         }
-        user.getCharacter(type).setPosition(new Position(row, column));
+        gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
+                user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.PLAYER);
+        user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column));
+        gameBoard.addElementToTile(row, column, MapElement.PLAYER);
+        return new Message("You moved " + direction);
     }
 }

@@ -82,7 +82,7 @@ public class Attributes implements Stats {
 
     @Override
     public void adjustDefence(int def) {
-        defence -= def;
+        defence += def;
     }
 
     @Override

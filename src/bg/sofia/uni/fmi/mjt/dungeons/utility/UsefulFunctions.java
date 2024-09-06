@@ -6,6 +6,6 @@ public class UsefulFunctions {
 
     public static int getRandomNumber(int min, int max) {
         Random random = new Random();
-        return random.nextInt(max - min) + min;
+        return random.nextInt(max - min);
     }
 }

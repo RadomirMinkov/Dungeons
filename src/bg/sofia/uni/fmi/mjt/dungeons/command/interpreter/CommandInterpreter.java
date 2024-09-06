@@ -45,7 +45,7 @@ public class CommandInterpreter {
                 default -> throw new UnknownCommandException("Unknown command!");
             };
         } else if (TWO == words.length && words[0].equals("move")) {
-            return new MoveCommand(gameEngine, gameEngine.getGameBoard(), key);
+            return new MoveCommand(gameEngine, key, words[1]);
         } else if (THREE == words.length) {
             return switch (words[0]) {
                 case "change", "choose" ->
