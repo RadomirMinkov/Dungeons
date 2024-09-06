@@ -1,0 +1,200 @@
+[
+  {
+    "level": 1,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 30,
+      "defence": 30
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Moon Sword"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Undyingrage"
+    },
+    "isAlive": true,
+    "experience": 0,
+    "neededExperience": 70,
+    "position": {
+      "row": 2,
+      "column": 2
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  },
+  {
+    "level": 3,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 35,
+      "defence": 35
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Herugrim"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Necrotic Nightmare"
+    },
+    "isAlive": true,
+    "experience": 0,
+    "neededExperience": 84,
+    "position": {
+      "row": 6,
+      "column": 1
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  },
+  {
+    "level": 4,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 35,
+      "defence": 35
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Rebelion"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Super Nova"
+    },
+    "isAlive": true,
+    "experience": 70,
+    "neededExperience": 84,
+    "position": {
+      "row": 5,
+      "column": 3
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  },
+  {
+    "level": 6,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 40,
+      "defence": 40
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Herugrim"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Chaosflare"
+    },
+    "isAlive": true,
+    "experience": 56,
+    "neededExperience": 101,
+    "position": {
+      "row": 4,
+      "column": 10
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  },
+  {
+    "level": 3,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 35,
+      "defence": 35
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Moon Sword"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Chaosflare"
+    },
+    "isAlive": true,
+    "experience": 0,
+    "neededExperience": 84,
+    "position": {
+      "row": 4,
+      "column": 4
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  },
+  {
+    "level": 1,
+    "stats": {
+      "maxHealth": 70,
+      "currentHealth": 70,
+      "maxMana": 70,
+      "currentMana": 70,
+      "attack": 30,
+      "defence": 30
+    },
+    "weapon": {
+      "upgradePercent": 0.2,
+      "level": 1,
+      "attack": 40.0,
+      "name": "Serpent Reaver"
+    },
+    "spell": {
+      "upgradePercent": 0.3,
+      "level": 1,
+      "attack": 50.0,
+      "manaCost": 30,
+      "name": "Eruption"
+    },
+    "isAlive": true,
+    "experience": 0,
+    "neededExperience": 70,
+    "position": {
+      "row": 4,
+      "column": 3
+    },
+    "attackPowerUps": 0,
+    "defencePowerUps": 0
+  }
+]

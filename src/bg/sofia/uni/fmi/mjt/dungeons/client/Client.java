@@ -12,9 +12,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_HOST;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_PORT;
+
 
 public class Client {
-    private static final int SERVER_PORT = 7777;
     private static final int BUFFER_SIZE = 1024;
     private static final ByteBuffer BYTE_BUFFER = ByteBuffer.allocate(BUFFER_SIZE);
     private static final String INSTRUCTIONS = """
@@ -59,7 +61,7 @@ public class Client {
         try (SocketChannel socketChannel = SocketChannel.open();
              Scanner scanner = new Scanner(System.in)) {
 
-            socketChannel.connect(new InetSocketAddress("localhost", SERVER_PORT));
+            socketChannel.connect(new InetSocketAddress(SERVER_HOST, SERVER_PORT));
 
             System.out.println("Connected to the server.");
             System.out.println(INSTRUCTIONS);

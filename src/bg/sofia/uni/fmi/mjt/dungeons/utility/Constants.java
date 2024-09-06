@@ -37,6 +37,8 @@ public class Constants {
     public static final int COLUMNS = 12;
     public static final String JSON_CHARACTER_INFORMATION = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
             "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\CharacterInformation.json";
+    public static final String JSON_MINION_INFORMATION = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
+            "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\MinionsInformation.json";
     public static final String JSON_GAME_BOARD = "C:\\Users\\HP\\IdeaProjects\\Dungeons" +
             "\\src\\bg\\sofia\\uni\\fmi\\mjt\\dungeons\\utility\\GameBoard.json";
 
@@ -51,4 +53,7 @@ public class Constants {
             "Shadowclap", "Arcaneblaze", "Amaterasu", "Lunar Shadow", "Bleedwave", "Chaosflare",
             "Firerampage", "Celestial Storm", "Domain Expansion", "Lunar Frostbite", "Undyingrage"
     );
+    public static final String EMPTY_STRING = "";
+    public static final String SERVER_HOST = "localhost";
+    public static final int SERVER_PORT = 7777;
 }

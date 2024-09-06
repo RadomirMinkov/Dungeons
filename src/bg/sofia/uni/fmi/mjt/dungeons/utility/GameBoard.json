@@ -6,6 +6,7 @@
           "FREE_SPACE"
         ],
         [
+          "TREASURE",
           "FREE_SPACE"
         ],
         [
@@ -92,7 +93,6 @@
           "FREE_SPACE"
         ],
         [
-          "OBSTACLE",
           "FREE_SPACE"
         ],
         [
@@ -113,6 +113,7 @@
           "FREE_SPACE"
         ],
         [
+          "TREASURE",
           "FREE_SPACE"
         ],
         [
@@ -175,6 +176,7 @@
           "FREE_SPACE"
         ],
         [
+          "TREASURE",
           "FREE_SPACE"
         ],
         [
@@ -287,6 +289,7 @@
           "FREE_SPACE"
         ],
         [
+          "TREASURE",
           "FREE_SPACE"
         ],
         [

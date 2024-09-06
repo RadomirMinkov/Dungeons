@@ -1,9 +1,12 @@
 package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
+import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EnoughMinionsExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
@@ -17,19 +20,20 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.JsonWriter;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.nio.channels.SelectionKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.COLUMNS;
-import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ROWS;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.*;
 
 public class GameEngine {
 
+    private static int currentMinionsNumber;
     List<User> allRegisteredUsers;
     Map<String, String> usersCredentials;
+    Map<String, String> activeCredentials;
+
+    List<SelectionKey> keys;
     List<User> activeUsers;
+    List<Minion> minions;
     Board gameBoard;
     JsonReader jsonReader;
     JsonWriter jsonWriter;
@@ -44,12 +48,16 @@ public class GameEngine {
         this.jsonReader = new JsonReader();
         this.jsonWriter = new JsonWriter();
         this.usersCredentials = new HashMap<>();
+        this.activeCredentials = new HashMap<>();
+        this.keys = new ArrayList<>();
     }
 
-    public GameEngine() {
+    public GameEngine() throws MapElementAlreadyExistsException {
         activeUsers = new ArrayList<>();
         this.gameBoard = jsonReader.readGameBoardFromJson();
         this.allRegisteredUsers = jsonReader.readUsersFromJson(usersCredentials);
+        this.minions = jsonReader.readMinionsFromJson();
+        populateBoardWithMinions();
     }
 
     public Board getGameBoard() {
@@ -70,6 +78,7 @@ public class GameEngine {
         activeUsers.remove(user);
         allRegisteredUsers.remove(user);
         key.attach(null);
+        keys.remove(key);
         return new Message("Successful deleting of a user!");
     }
 
@@ -91,11 +100,16 @@ public class GameEngine {
         if (!usersCredentials.get(username).equals(password)) {
             return new Message("Password is wrong! Try again!");
         }
+        if (activeCredentials.get(username) != null) {
+            return new Message("This user is already logged in!");
+        }
         for (User user : allRegisteredUsers) {
             if (user.getUsername().equals(username)) {
                 activeUsers.add(user);
+                activeCredentials.put(username, password);
                 loggedPlayers++;
                 key.attach(user);
+                keys.add(key);
             }
         }
         return new Message("Successful login into your account");
@@ -148,8 +162,68 @@ public class GameEngine {
         }
         gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                 user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.PLAYER);
-        user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column));
+
+        user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column))
+        ;
         gameBoard.addElementToTile(row, column, MapElement.PLAYER);
-        return new Message("You moved " + direction);
+        return new Message("You moved " + direction + "! " + inspectTile(row, column));
+    }
+
+    private String inspectTile(int row, int column) {
+        PriorityQueue<MapElement> tile = gameBoard.getTile(row, column);
+        if (TWO == tile.size() || ONE == tile.size()) {
+            return EMPTY_STRING;
+        }
+        if (tile.contains(MapElement.MINION)) {
+            return "Starting battle with a minion of the evil!";
+        }
+        long players = tile.stream()
+                .filter(element -> element.equals(MapElement.PLAYER))
+                .count();
+        if (players > 1) {
+            return "Initiate trade or battle with player!";
+        }
+        if (tile.contains(MapElement.TREASURE)) {
+            return "You stumbled upon a treasure! Do you want to pick it?";
+        }
+        return EMPTY_STRING;
+    }
+
+    private boolean availableTile(int row, int column) {
+        return !(gameBoard.getTile(row, column).contains(MapElement.OBSTACLE) ||
+                gameBoard.getTile(row, column).contains(MapElement.PLAYER) ||
+                gameBoard.getTile(row, column).contains(MapElement.MINION));
+    }
+
+    public Position genPosition() {
+        Random random = new Random();
+        boolean successful = false;
+        int row = 0;
+        int column = 0;
+        while (!successful) {
+            row = random.nextInt(ROWS);
+            column = random.nextInt(COLUMNS);
+
+            if (availableTile(row, column)) {
+                successful = true;
+            }
+        }
+        return new Position(row, column);
+    }
+
+    public void spawnMinion(int level) throws EnoughMinionsExistException, NotEnoughExperienceException {
+        if (currentMinionsNumber >= MAX_MINIONS_NUMBER) {
+            throw new EnoughMinionsExistException("There are already enough minions on the map!");
+        }
+        Position minionPosition = genPosition();
+        gameBoard.getTile(minionPosition.getRow(), minionPosition.getColumn()).add(MapElement.MINION);
+    }
+
+    private void populateBoardWithMinions() throws MapElementAlreadyExistsException {
+        for (Minion minion : minions) {
+            gameBoard.getBoard().addElement(MapElement.MINION, minion.getPosition().getRow(),
+                    minion.getPosition().getColumn());
+            currentMinionsNumber++;
+        }
     }
 }

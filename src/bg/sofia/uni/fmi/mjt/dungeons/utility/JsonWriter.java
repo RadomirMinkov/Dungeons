@@ -19,8 +19,17 @@ public class JsonWriter {
         }
     }
 
+    public void writeMinionsInformationToJson(List<User> minions) {
+        try (FileWriter writer = new FileWriter(Constants.JSON_MINION_INFORMATION)) {
+            Gson gson1 = new GsonBuilder().setPrettyPrinting().create();
+            gson1.toJson(minions, writer);
+        } catch (IOException e) {
+            e.getMessage();
+        }
+    }
+
     public void writeGameBoardToJson(Board gameBoard) {
-        try (FileWriter writer = new FileWriter(Constants.JSON_CHARACTER_INFORMATION)) {
+        try (FileWriter writer = new FileWriter(Constants.JSON_GAME_BOARD)) {
             Gson gson1 = new GsonBuilder().setPrettyPrinting().create();
             gson1.toJson(gameBoard, writer);
         } catch (IOException e) {

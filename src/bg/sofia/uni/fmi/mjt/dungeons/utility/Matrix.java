@@ -5,7 +5,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.MapElement;
 
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Matrix {
     private PriorityQueue<MapElement>[][] matrix;
@@ -32,7 +31,8 @@ public class Matrix {
         return matrix[row][column].contains(type);
     }
 
-    public void addElement(MapElement element, int row, int column) throws MapElementAlreadyExistsException {
+    public void addElement(MapElement element, int row, int column)
+            throws MapElementAlreadyExistsException {
         if (matrix[row][column].contains(element) && element != MapElement.PLAYER) {
             throw new MapElementAlreadyExistsException("This element already exists on this tile!");
         }

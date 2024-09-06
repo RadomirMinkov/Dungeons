@@ -5,7 +5,7 @@ public enum MapElement {
 
     PLAYER(2, "P"),
     MINION(3, "E"),
-    TREASURE(4, "\t&#9670"),
+    TREASURE(4, "T"),
     FREE_SPACE(5, "O");
 
     private final int priority;

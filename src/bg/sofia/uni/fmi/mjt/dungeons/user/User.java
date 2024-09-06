@@ -12,6 +12,8 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.util.Map;
 
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.FOUR;
+
 public class User implements Comparable<User> {
 
     private Credentials credentials;
@@ -68,7 +70,7 @@ public class User implements Comparable<User> {
         if (characters.get(type) != null) {
             return new Message("You already character of this class!");
         }
-        characters.put(type, new Character("rado", new Position(2,4)));
+        characters.put(type, new Character("rado", new Position(2, FOUR)));
         return new Message("Temporary solution!");
     }
 
@@ -80,7 +82,8 @@ public class User implements Comparable<User> {
         return new Message("Character successfully deleted!");
     }
 
-    public Message changeCharacter(ClassType type, Board gameBoard) throws MapElementDoesNotExistException, MapElementAlreadyExistsException {
+    public Message changeCharacter(ClassType type, Board gameBoard)
+            throws MapElementDoesNotExistException, MapElementAlreadyExistsException {
         if (null != activeCharacter && activeCharacter.equals(type)) {
             return new Message("You are already using this character");
         }
@@ -92,9 +95,10 @@ public class User implements Comparable<User> {
                     characters.get(activeCharacter).getPosition().getRow(),
                     characters.get(activeCharacter).getPosition().getColumn());
         }
-        gameBoard.getBoard().addElement(MapElement.PLAYER, characters.get(type).getPosition().getRow(),
-                characters.get(type).getPosition().getColumn());
         activeCharacter = type;
+        gameBoard.getBoard().addElement(MapElement.PLAYER,
+                characters.get(type).getPosition().getRow(),
+                characters.get(type).getPosition().getColumn());
         return new Message("Switched to the " + type + "class!");
     }
 

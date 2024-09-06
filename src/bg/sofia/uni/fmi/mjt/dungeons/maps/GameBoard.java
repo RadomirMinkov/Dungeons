@@ -5,7 +5,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Matrix;
 
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class GameBoard implements Board {
 

@@ -1,7 +1,7 @@
 package bg.sofia.uni.fmi.mjt.dungeons.server;
 
 import bg.sofia.uni.fmi.mjt.dungeons.command.interpreter.CommandInterpreter;
-import bg.sofia.uni.fmi.mjt.dungeons.user.User;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 
 import java.io.ByteArrayInputStream;
@@ -18,14 +18,19 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_HOST;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_PORT;
+
 public class Server {
-    public static final int SERVER_PORT = 7777;
-    private static final String SERVER_HOST = "localhost";
     private static final int BUFFER_SIZE = 1024;
-    private static final CommandInterpreter COMMAND_INTERPRETER;
+    private static CommandInterpreter commandInterpreter;
 
     static {
-        COMMAND_INTERPRETER = new CommandInterpreter();
+        try {
+            commandInterpreter = new CommandInterpreter();
+        } catch (MapElementAlreadyExistsException e) {
+            System.out.println("Failed initialisation of the map!");
+        }
     }
 
     private static Message readRequest(ByteBuffer buffer)
@@ -83,7 +88,7 @@ public class Server {
                             continue;
                         }
                         Message message = readRequest(buffer);
-                        Message response = COMMAND_INTERPRETER.executeCommand(message, key);
+                        Message response = commandInterpreter.executeCommand(message, key);
                         sendMessage(response, buffer, sc);
 
                     } else if (key.isAcceptable()) {

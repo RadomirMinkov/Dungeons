@@ -11,6 +11,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.command.LogoutCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.MoveCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.ShowMapCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.UserCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.GameEngine;
 import bg.sofia.uni.fmi.mjt.dungeons.user.User;
@@ -26,7 +27,7 @@ import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TWO;
 public class CommandInterpreter {
     GameEngine gameEngine;
 
-    public CommandInterpreter() {
+    public CommandInterpreter() throws MapElementAlreadyExistsException {
         this.gameEngine = new GameEngine();
     }
 

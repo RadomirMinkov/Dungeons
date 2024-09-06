@@ -29,7 +29,7 @@ import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_TWO;
 public class Minion implements Actor {
 
     private int level;
-    private Stats stats;
+    private Attributes stats;
 
     private Weapon weapon;
     private Spell spell;
@@ -53,12 +53,14 @@ public class Minion implements Actor {
                 .get(UsefulFunctions.getRandomNumber(0, Constants.SPELL_NAMES.size()));
         this.spell = new Spell(spellName);
         isAlive = true;
-        this.experience = neededExperience * (level - 1);
         neededExperience = Constants.SEVENTY;
-        levelUp();
+        this.experience = neededExperience * (level - 1);
+        if (this.level != 1) {
+            levelUp();
+        }
     }
 
-    public Minion(int level, Position position, Stats stats,
+    public Minion(int level, Position position, Attributes stats,
                   Weapon weapon, Spell spell, int experience, int neededExperience) {
         this.level = level;
         this.position = position;
