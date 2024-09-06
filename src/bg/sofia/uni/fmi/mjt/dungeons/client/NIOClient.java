@@ -19,7 +19,8 @@ public class NIOClient {
     private ByteBuffer buffer;
 
     private static final int BUFFER_SIZE = 1024;
-    private static final String NORMAL_MODE_INSTRUCTIONS = """
+    private boolean running = true;
+    static final String NORMAL_MODE_INSTRUCTIONS = """
             map
             help
             login <username> <password>
@@ -32,18 +33,18 @@ public class NIOClient {
             delete user <username> <password>
             exit""";
 
-    private static final String BATTLE_MODE_INSTRUCTIONS = """
+    static final String BATTLE_MODE_INSTRUCTIONS = """
             attack
             defend
             power up
             use potion <potion-type> { health, mana }
             exit""";
-    private static final String TRADING_MODE_INSTRUCTIONS = """
+    static final String TRADING_MODE_INSTRUCTIONS = """
             share <item>
             accept trade
             accept item
             exit""";
-    private static final String TREASURE_MODE_INSTRUCTIONS = """
+    static final String TREASURE_MODE_INSTRUCTIONS = """
             pick up
             put down
             exit""";
@@ -61,15 +62,16 @@ public class NIOClient {
     public void start() throws IOException {
         new Thread(new ConsoleInputHandler(this)).start();
 
-        while (true) {
-            selector.select();
+        while (running) {
+            int keyNumber = selector.select();
+            System.out.println(keyNumber);
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
             Iterator<SelectionKey> keyIterator = selectedKeys.iterator();
-
+            System.out.println("Tuk sym");
             while (keyIterator.hasNext()) {
                 SelectionKey key = keyIterator.next();
                 keyIterator.remove();
-
+                System.out.println("Tuk sym");
                 if (key.isConnectable()) {
                     handleConnect(key);
                 } else if (key.isWritable()) {
@@ -94,21 +96,20 @@ public class NIOClient {
     }
 
     public void sendMessage(String message) throws IOException {
+        if (message.equals("help")) {
+            System.out.println(NORMAL_MODE_INSTRUCTIONS);
+            return;
+        }
         clientChannel.register(selector, SelectionKey.OP_WRITE);
 
         clientChannel.keyFor(selector).attach(message);
+        selector.wakeup();
     }
 
     private void handleWrite(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
-
+        System.out.println("pisha");
         String message = (String) key.attachment();
-        if ("exit".equals(message)) {
-            break;
-        } else if ("help".equals(message)) {
-            System.out.println(BATTLE_MODE_INSTRUCTIONS);
-            continue;
-        }
 
         ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
         channel.write(buffer);
@@ -116,6 +117,18 @@ public class NIOClient {
         System.out.println("Message sent to server: " + message);
 
         key.interestOps(SelectionKey.OP_READ);
+    }
+
+    public void closeConnection() throws IOException {
+        System.out.println("Closing connection...");
+        if (clientChannel != null) {
+            clientChannel.close();
+        }
+        if (selector != null) {
+            selector.close();
+        }
+        running = false;
+        System.out.println("Connection closed.");
     }
 
     private void handleRead(SelectionKey key) throws IOException {
