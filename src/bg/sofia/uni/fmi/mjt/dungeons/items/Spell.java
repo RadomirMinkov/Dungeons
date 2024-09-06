@@ -1,12 +1,11 @@
 package bg.sofia.uni.fmi.mjt.dungeons.items;
 
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_ONE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_THREE;
 
-public class Spell implements Pickable, Treasure, Item {
+public class Spell implements Treasure, Item {
 
     private double upgradePercent = ZERO_POINT_THREE;
     private int level;

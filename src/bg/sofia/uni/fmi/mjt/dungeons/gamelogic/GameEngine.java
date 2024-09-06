@@ -3,6 +3,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EnoughMinionsExistException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
@@ -10,6 +11,11 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
+import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Spell;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Treasure;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Board;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.MapElement;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
@@ -29,10 +35,14 @@ import java.util.Random;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.COLUMNS;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.EMPTY_STRING;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.FOUR;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.MAX_MINIONS_NUMBER;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ONE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ROWS;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SPELL_NAMES;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.THREE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TWO;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.WEAPONS_NAMES;
 
 public class GameEngine {
 
@@ -48,6 +58,7 @@ public class GameEngine {
     JsonReader jsonReader;
     JsonWriter jsonWriter;
 
+    private static final Random RANDOM = new Random();
     public static int loggedPlayers;
 
     static {
@@ -171,6 +182,9 @@ public class GameEngine {
         if (gameBoard.getTile(row, column).contains(MapElement.OBSTACLE)) {
             return new Message("There is wall that prevents your movement!", Mode.NORMAL);
         }
+        if (gameBoard.getTile(row, column).stream().filter(element -> element.equals(MapElement.PLAYER)).count() >= 2) {
+            return new Message("There is already enough players on that square!", Mode.NORMAL);
+        }
         gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                 user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.PLAYER);
 
@@ -244,5 +258,40 @@ public class GameEngine {
                 user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(),
                 MapElement.PLAYER);
 
+    }
+
+    public Message pickUpTreasure(User user) {
+        Treasure treasure = generateTreasure();
+        try {
+            user.getCharacter(user.getActiveCharacter()).pickUpItem(treasure);
+            gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
+                    user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.TREASURE);
+            return new Message("Successfully picked up the treasure which is " + treasure, Mode.NORMAL);
+        } catch (FullBackPackException e) {
+            return new Message(e.getMessage(), Mode.TRADE);
+        } catch (MapElementDoesNotExistException e) {
+            return new Message(e.getMessage(), Mode.NORMAL);
+        }
+    }
+
+    private Treasure generateTreasure() {
+        int randomNumber = RANDOM.nextInt(FOUR) + 1;
+        int level = RANDOM.nextInt(FOUR);
+        return switch (randomNumber) {
+            case ONE -> new HealthPotion();
+            case TWO -> new ManaPotion();
+            case THREE -> new Spell(generateSpellName(), level);
+            case FOUR -> new Weapon(generateWeaponName(), level);
+            default -> throw new IllegalStateException("Unexpected value: " + randomNumber);
+        };
+    }
+
+    private String generateWeaponName() {
+        return WEAPONS_NAMES.get(RANDOM.nextInt(WEAPONS_NAMES.size()));
+
+    }
+
+    private String generateSpellName() {
+        return SPELL_NAMES.get(RANDOM.nextInt(SPELL_NAMES.size()));
     }
 }

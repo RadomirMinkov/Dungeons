@@ -10,6 +10,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.command.DefendCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.DeleteCharacter;
 import bg.sofia.uni.fmi.mjt.dungeons.command.DeleteUserCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.DoNothingCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.DropItemCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.FightCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.LoginCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.LogoutCommand;
@@ -18,6 +19,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.command.OfferCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.PickUpCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.PowerUpCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.PutDownCommand;
+import bg.sofia.uni.fmi.mjt.dungeons.command.SeeInventoryCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.ShowMapCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.TradeCommand;
 import bg.sofia.uni.fmi.mjt.dungeons.command.UsePotionCommand;
@@ -88,8 +90,8 @@ public class CommandInterpreter {
                 case "nothing" -> new DoNothingCommand();
                 default -> throw new UnknownCommandException("Unknown command!");
             };
-            throw new UnknownCommandException("Unknown command!");
         }
+        throw new UnknownCommandException("Unknown command!");
     }
 
     private UserCommand intepretateTrade(Message message, SelectionKey key) throws UnknownCommandException {
@@ -98,7 +100,7 @@ public class CommandInterpreter {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length) {
             return switch (words[0]) {
-                case "offer" -> new OfferCommand(gameEngine, key);
+                case "offer" -> new OfferCommand();
                 case "accept" -> new AcceptItemCommand();
                 default -> throw new UnknownCommandException("Unknown command!");
             };
@@ -111,9 +113,11 @@ public class CommandInterpreter {
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length && words[0].equals("pick") && words[1].equals("up")) {
-            return new PickUpCommand();
+            return new PickUpCommand(gameEngine, key);
         } else if (TWO == words.length && words[0].equals("put") && words[1].equals("down")) {
-            return new PutDownCommand();
+            return new PutDownCommand(gameEngine, key);
+        } else if (TWO == words.length && words[0].equals("drop") ) {
+            return  new DropItemCommand(gameEngine, key, words[1]);
         }
         throw new UnknownCommandException("Unknown command!");
     }
@@ -150,6 +154,7 @@ public class CommandInterpreter {
         return switch (words[0]) {
             case "map" -> new ShowMapCommand(gameEngine, gameEngine.getGameBoard());
             case "logout" -> new LogoutCommand(gameEngine, key);
+            case "inventory" -> new SeeInventoryCommand(gameEngine, key);
             default -> throw new UnknownCommandException("Unknown command!");
         };
     }

@@ -88,8 +88,8 @@ public class Character implements Actor {
             level += 1;
             stats.adjustCurrentHealth(Constants.TEN);
             stats.adjustCurrentMana(Constants.TEN);
-            stats.adjustDefence(Constants.FIFE);
-            stats.adjustAttack(Constants.FIFE);
+            stats.adjustDefence(Constants.FIVE);
+            stats.adjustAttack(Constants.FIVE);
             neededExperience += (int) Math.round(neededExperience * Constants.LEVEL_UP_MULTIPLIER);
         }
     }
@@ -107,6 +107,10 @@ public class Character implements Actor {
     @Override
     public boolean getIsAlive() {
         return isAlive;
+    }
+
+    public BackPack getInventory() {
+        return inventory;
     }
 
     @Override

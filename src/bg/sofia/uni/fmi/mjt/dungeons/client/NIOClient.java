@@ -33,6 +33,7 @@ public class NIOClient {
             help
             login <username> <password>
             logout
+            inventory
             move <direction>
             create character <class>
             delete character <class>
@@ -53,6 +54,7 @@ public class NIOClient {
     static final String TREASURE_MODE_INSTRUCTIONS = """
             pick up
             put down
+            drop <item>
             exit""";
     static final String CHOOSE_MODE_INSTRUCTIONS = """
             trade

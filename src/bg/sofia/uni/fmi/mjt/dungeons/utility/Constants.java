@@ -17,7 +17,7 @@ public class Constants {
     public static final int MAX_MINIONS_NUMBER = 10;
     public static final int MAX_TREASURES_NUMBER = 7;
     public static final int TEN = 10;
-    public static final int FIFE = 5;
+    public static final int FIVE = 5;
     public static final int FOUR = 4;
     public static final int THREE = 3;
     public static final int TWO = 2;

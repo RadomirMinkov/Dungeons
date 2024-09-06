@@ -39,8 +39,8 @@ public class BackPack implements Inventory {
 
     @Override
     public void addElement(Pickable item) throws FullBackPackException {
-        if (inventory.size() == capacity) {
-            throw new FullBackPackException("The Backpack is full!");
+        if (inventory.size() >= capacity) {
+            throw new FullBackPackException("The Backpack is full! You should drop item to be able to pick another!");
         }
         inventory.add(item);
     }
