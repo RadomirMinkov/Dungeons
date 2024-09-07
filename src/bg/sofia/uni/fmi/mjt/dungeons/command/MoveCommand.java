@@ -27,7 +27,10 @@ public class MoveCommand implements UserCommand {
     @Override
     public Message execute() {
         try {
-            return gameEngine.movePlayer((User) key.attachment(), direction);
+            Message message = gameEngine.movePlayer((User) key.attachment(), direction);
+            return new Message(message.message()  + System.lineSeparator() +
+                    gameEngine.getGameBoard().boardAsString().toString(),
+                    message.mode());
         } catch (UnknownCommandException | MapElementDoesNotExistException | MapElementAlreadyExistsException e) {
             return new Message(e.getMessage(), Mode.NORMAL);
         }

@@ -135,7 +135,7 @@ public class UserTest {
         Character activeCharacter = user.getCharacter(ClassType.WARRIOR);
 
         assertNotNull(activeCharacter, "Character should not be null");
-        assertEquals("rado", activeCharacter.getName(), "The active character should be the Warrior character");
+        assertEquals("warrior", activeCharacter.getName(), "The active character should be the Warrior character");
     }
 
     @Test

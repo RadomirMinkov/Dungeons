@@ -74,7 +74,7 @@ public class CommandInterpreter {
             return new PowerUpCommand();
 
         } else if (THREE == words.length && words[0].equals("use") && words[1].equals("potion")) {
-            return new UsePotionCommand();
+            return new UsePotionCommand(key, words[2]);
         }
         throw new UnknownCommandException("Unknown command!");
     }

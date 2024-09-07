@@ -68,7 +68,7 @@ public class User implements Comparable<User> {
         if (characters.get(type) != null) {
             return new Message("You already character of this class!", Mode.NORMAL);
         }
-        characters.put(type, new Character("rado", new Position(2, FOUR)));
+        characters.put(type, new Character(type.toString(), new Position(2, FOUR)));
         return new Message("Temporary solution!", Mode.NORMAL);
     }
 

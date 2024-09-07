@@ -35,6 +35,9 @@ public class DropItemCommand implements UserCommand {
             }
             index++;
         }
+        if (index >= treasureList.size()) {
+            return new Message("There was no item to drop!", Mode.TRADE);
+        }
         try {
             user.getCharacter(user.getActiveCharacter()).getInventory().removeElement(index);
             return new Message("You dropped " + word + "successfully and you can pick up the reasure!", Mode.TREASURE);
