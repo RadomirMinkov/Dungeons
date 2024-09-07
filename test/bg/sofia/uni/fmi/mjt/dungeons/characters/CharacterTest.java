@@ -57,15 +57,16 @@ class CharacterTest {
     @Test
     void testTakeDamage() throws MissAttackException, PlayerDiedException, PlayerDiedAndResurrectedException, EmptyInventoryException {
         AtomicInteger damageTaken = new AtomicInteger(0);
-        character.takeDamage(60, damageTaken);
+        character.takeDamage(60, damageTaken, null);
 
-        assertEquals(90, character.getStats().getCurrentHealth(), "Health should be reduced to 10");
+        assertEquals(50, character.getStats().getCurrentHealth(), "Health should be reduced to 10");
     }
 
     @Test
     void testTakeDamageMissAttack() {
         AtomicInteger damageTaken = new AtomicInteger(0);
-        Exception exception = assertThrows(MissAttackException.class, () -> character.takeDamage(40, damageTaken));
+        Exception exception =
+                assertThrows(MissAttackException.class, () -> character.takeDamage(10, damageTaken, null));
 
         String expectedMessage = "The attack missed!";
         String actualMessage = exception.getMessage();
@@ -74,17 +75,19 @@ class CharacterTest {
     }
 
     @Test
-    void testResurrectPlayer() throws EmptyInventoryException, FullBackPackException {
-        testBackPack.addElement(new HealthPotion());  // Add a health potion for resurrection
+    void testResurrectPlayer() throws FullBackPackException {
+        testBackPack.addElement(new HealthPotion());
 
-        Exception exception = assertThrows(PlayerDiedAndResurrectedException.class, () -> character.takeDamage(200, new AtomicInteger()));
+        Exception exception = assertThrows(PlayerDiedAndResurrectedException.class,
+                () -> character.takeDamage(200, new AtomicInteger(), null));
         assertTrue(exception.getMessage().contains("resurrected dropping item"));
         assertTrue(character.getIsAlive(), "Character should still be alive after resurrection.");
     }
 
     @Test
     void testResurrectPlayerNoItems() {
-        Exception exception = assertThrows(PlayerDiedException.class, () -> character.takeDamage(200, new AtomicInteger()));
+        Exception exception = assertThrows(PlayerDiedException.class,
+                () -> character.takeDamage(200, new AtomicInteger(), null));
 
         assertTrue(exception.getMessage().contains("died"));
         assertFalse(character.getIsAlive(), "Character should not be alive after dying with no items.");
@@ -193,12 +196,12 @@ class CharacterTest {
 
         doAnswer(invocation -> {
             damageTaken.set(70);
-            return null;
-        }).when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class));
+            return new Message("", Mode.NORMAL, null);
+        }).when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class), any());
 
         Message result = character.attack(mockItem, mockEnemy);
 
-        assertEquals("You attacked the enemy for 0", result.message());
+        assertEquals("You attacked the enemy for 0!", result.message());
         assertEquals(Mode.BATTLE, result.mode());
     }
 
@@ -206,7 +209,8 @@ class CharacterTest {
     void testAttackMiss() throws Exception {
         when(mockItem.getAttack()).thenReturn(20.0);
 
-        doThrow(new MissAttackException("The attack missed!")).when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class));
+        doThrow(new MissAttackException("The attack missed!"))
+                .when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class), any());
 
         Message result = character.attack(mockItem, mockEnemy);
 
@@ -218,7 +222,8 @@ class CharacterTest {
     void testAttackWithOtherException() throws Exception {
         when(mockItem.getAttack()).thenReturn(20.0);
 
-        doThrow(new RuntimeException("Something went wrong")).when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class));
+        doThrow(new RuntimeException("Something went wrong"))
+                .when(mockEnemy).takeDamage(anyDouble(), any(AtomicInteger.class), any());
 
         Message result = character.attack(mockItem, mockEnemy);
 

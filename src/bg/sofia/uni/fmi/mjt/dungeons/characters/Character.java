@@ -3,11 +3,11 @@ package bg.sofia.uni.fmi.mjt.dungeons.characters;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ItemNotFoundException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MinionDiedException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MissAttackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedAndResurrectedException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedException;
-
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
 
 import bg.sofia.uni.fmi.mjt.dungeons.items.BackPack;
@@ -24,6 +24,10 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.UsefulFunctions;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.COMBAT_MODIFIER;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TEN;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_FIVE;
 
 public class Character implements Actor {
 
@@ -118,10 +122,10 @@ public class Character implements Actor {
     }
 
     @Override
-    public void takeDamage(double damage, AtomicInteger damageTaken)
+    public Message takeDamage(double damage, AtomicInteger damageTaken, Actor actor)
             throws MissAttackException, PlayerDiedAndResurrectedException,
             PlayerDiedException, EmptyInventoryException {
-        double initialDamage = damage - stats.getDefence();
+        double initialDamage = damage - stats.getDefence() * COMBAT_MODIFIER;
         if (initialDamage <= 0) {
             throw new MissAttackException("The attack missed!");
         }
@@ -130,6 +134,7 @@ public class Character implements Actor {
             resurrectPlayer();
         }
         damageTaken.addAndGet((int) Math.floor(initialDamage));
+        return new Message("", Mode.BATTLE, null);
     }
 
     public void resurrectPlayer() throws PlayerDiedException, PlayerDiedAndResurrectedException,
@@ -155,11 +160,20 @@ public class Character implements Actor {
     }
 
     @Override
-    public Message attack(Item item, Actor enemy) {
+    public Message attack(Item item, Actor enemy) throws MinionDiedException, NotEnoughExperienceException {
+
+        AtomicInteger damageTaken = new AtomicInteger(0);
         try {
-            AtomicInteger damageTaken = new AtomicInteger(0);
-            enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
-            return new Message("You attacked the enemy for " + damageTaken, Mode.BATTLE, null);
+            Message message = enemy.takeDamage(stats.getAttack() +
+                    item.getAttack() * ZERO_POINT_FIVE, damageTaken, this);
+            return new Message("You attacked the enemy for " + damageTaken +
+                    "!" + message.message(), Mode.BATTLE, null);
+        } catch (MinionDiedException e) {
+            experience += TEN * enemy.getLevel();
+            if (experience >= neededExperience) {
+                levelUp();
+            }
+            throw new MinionDiedException(e.getMessage());
         } catch (Exception e) {
             return new Message(e.getMessage(), Mode.BATTLE, null);
         }

@@ -15,7 +15,7 @@
           "attack": 50,
           "defence": 50
         },
-        "name": "radomir",
+        "name": "warrior",
         "inventory": {
           "inventory": [],
           "capacity": 10
@@ -38,8 +38,8 @@
   },
   {
     "credentials": {
-      "username": "nikola",
-      "password": "Alienkiller832"
+      "username": "brother",
+      "password": "bratcheto"
     },
     "characters": {
       "WARRIOR": {
@@ -52,7 +52,7 @@
           "attack": 50,
           "defence": 50
         },
-        "name": "radomir",
+        "name": "warrior",
         "inventory": {
           "inventory": [],
           "capacity": 10
@@ -76,7 +76,7 @@
   {
     "credentials": {
       "username": "MyPrecious",
-      "password": "Alienkiller832"
+      "password": "zarata"
     },
     "characters": {
       "WARRIOR": {
@@ -89,7 +89,7 @@
           "attack": 50,
           "defence": 50
         },
-        "name": "radomir",
+        "name": "warrior",
         "inventory": {
           "inventory": [],
           "capacity": 10

@@ -66,7 +66,7 @@ public class CommandInterpreter {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
             return switch (words[0]) {
-                case "attack" -> new AttackCommand(gameEngine, key);
+                case "attack" -> new AttackCommand(gameEngine, key, message.user());
                 case "defend" -> new DefendCommand();
                 default -> throw new UnknownCommandException("Unknown command!");
             };

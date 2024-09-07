@@ -20,7 +20,7 @@ public class Weapon extends Treasure implements  Item {
     public Weapon(String name, int level) {
         super(name);
         this.level = level;
-        this.attack = Constants.FIFTY;
+        this.attack = Constants.FORTY;
         for (int i = 1; i < level; i++) {
             upgradeItem();
         }

@@ -71,9 +71,9 @@ class MinionTest {
         when(weapon.getAttack()).thenReturn(10.0);
 
         Actor enemy = mock(Actor.class);
-        doNothing().when(enemy).takeDamage(anyDouble(), any(AtomicInteger.class));
 
         Message result = minion.attack(weapon, enemy);
+        verify(enemy).takeDamage(anyDouble(), any(AtomicInteger.class), any());
         assertEquals("Minion attacked you for 0", result.message(), "Attack message should match expected output");
     }
 
@@ -83,7 +83,8 @@ class MinionTest {
         when(weapon.getAttack()).thenReturn(10.0);
 
         Actor enemy = mock(Actor.class);
-        doThrow(new MissAttackException("The attack missed!")).when(enemy).takeDamage(anyDouble(), any(AtomicInteger.class));
+        doThrow(new MissAttackException("The attack missed!"))
+                .when(enemy).takeDamage(anyDouble(), any(AtomicInteger.class), any());
 
         Message result = minion.attack(weapon, enemy);
         assertEquals("The attack missed!", result.message(), "Attack exception should be caught and return the proper message");
@@ -92,16 +93,17 @@ class MinionTest {
     @Test
     void testTakeDamageSuccessful() throws MissAttackException, MinionDiedException {
         AtomicInteger damageTaken = new AtomicInteger(0);
-        minion.takeDamage(70, damageTaken);
+        minion.takeDamage(70, damageTaken,null);
 
-        assertEquals(40, damageTaken.get(), "Damage taken should be calculated correctly");
-        assertEquals(30, minion.getStats().getCurrentHealth(), "Health should decrease by the correct amount");
+        assertEquals(64, damageTaken.get(), "Damage taken should be calculated correctly");
+        assertEquals(6, minion.getStats().getCurrentHealth(), "Health should decrease by the correct amount");
     }
 
     @Test
     void testTakeDamageMissedAttack() {
         AtomicInteger damageTaken = new AtomicInteger(0);
-        Exception exception = assertThrows(MissAttackException.class, () -> minion.takeDamage(0, damageTaken), "Should throw MissAttackException if damage is too low");
+        Exception exception = assertThrows(MissAttackException.class,
+                () -> minion.takeDamage(0, damageTaken, null), "Should throw MissAttackException if damage is too low");
 
         assertEquals("The attack missed!", exception.getMessage(), "Exception message should match expected output");
     }
@@ -109,9 +111,10 @@ class MinionTest {
     @Test
     void testTakeDamageMinionDied() {
         AtomicInteger damageTaken = new AtomicInteger(0);
-        Exception exception = assertThrows(MinionDiedException.class, () -> minion.takeDamage(1000, damageTaken), "Should throw MinionDiedException if health drops below 0");
+        Exception exception = assertThrows(MinionDiedException.class,
+                () -> minion.takeDamage(1000, damageTaken, null), "Should throw MinionDiedException if health drops below 0");
 
-        assertEquals("The Minion died!", exception.getMessage(), "Exception message should match expected output");
+        assertEquals("The Minion died! You did 994", exception.getMessage(), "Exception message should match expected output");
         assertFalse(minion.getIsAlive(), "Minion should be marked as dead");
     }
 

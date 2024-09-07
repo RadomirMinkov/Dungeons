@@ -24,6 +24,7 @@ public class Constants {
     public static final int ONE = 1;
     public static final int DEFENCE_MODIFIER = 5;
     public static final int ATTACK_MODIFIER = 5;
+    public static final double COMBAT_MODIFIER = 0.2;
 
     public static final double UPGRADE_PERCENTAGE = 0.2;
     public static final double ZERO_POINT_TWO = 0.2;

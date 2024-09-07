@@ -209,7 +209,7 @@ public class NIOClient {
             NIOClient client = new NIOClient(SERVER_HOST, SERVER_PORT);
             client.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

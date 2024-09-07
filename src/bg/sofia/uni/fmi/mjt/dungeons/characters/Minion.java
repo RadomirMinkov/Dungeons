@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ATTACK_MODIFIER;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.COMBAT_MODIFIER;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.DEFENCE_MODIFIER;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ONE;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.TEN;
@@ -133,7 +134,7 @@ public class Minion implements Actor {
     public Message attack(Item item, Actor enemy) {
         try {
             AtomicInteger damageTaken = new AtomicInteger(0);
-            enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
+            enemy.takeDamage(stats.getAttack() + item.getAttack() * ZERO_POINT_THREE, damageTaken, this);
             return new Message("Minion attacked you for " + damageTaken, Mode.BATTLE, null);
         } catch (Exception e) {
             return new Message(e.getMessage(), Mode.BATTLE, null);
@@ -151,8 +152,9 @@ public class Minion implements Actor {
     }
 
     @Override
-    public void takeDamage(double damage, AtomicInteger damageTaken) throws MissAttackException, MinionDiedException {
-        double initialDamage = damage - stats.getDefence();
+    public Message takeDamage(double damage, AtomicInteger damageTaken, Actor actor)
+            throws MissAttackException, MinionDiedException {
+        double initialDamage = damage - stats.getDefence() * COMBAT_MODIFIER;
         if (initialDamage <= 0) {
             throw new MissAttackException("The attack missed!");
         }
@@ -160,13 +162,15 @@ public class Minion implements Actor {
         damageTaken.addAndGet((int) Math.floor(initialDamage));
         if (stats.getCurrentHealth() < 0) {
             isAlive = false;
-            throw new MinionDiedException("The Minion died!");
+            throw new MinionDiedException("The Minion died! You did " + damageTaken.get());
         }
+        return takeTurn(actor);
+
     }
 
     public Action decideAction() {
-        double healthPercentage = (double) (stats.getCurrentHealth() * 1.0) / (stats.getMaxHealth() * 1.0);
-        double manaPercentage = (double) (stats.getCurrentMana() * 1.0) / (stats.getMaxMana() * 1.0);
+        double healthPercentage = (stats.getCurrentHealth() * 1.0) / (stats.getMaxHealth() * 1.0);
+        double manaPercentage = (stats.getCurrentMana() * 1.0) / (stats.getMaxMana() * 1.0);
 
         if (healthPercentage < ZERO_POINT_THREE && manaPercentage < ZERO_POINT_THREE) {
             return Action.DEFEND;

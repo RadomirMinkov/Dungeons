@@ -28,13 +28,14 @@ public interface Actor {
 
     boolean getIsAlive();
 
-    Message attack(Item item, Actor actor);
+    Message attack(Item item, Actor enemy) throws MinionDiedException, NotEnoughExperienceException;
 
     Position getPosition();
 
     void setPosition(Position position);
 
-    void takeDamage(double damage, AtomicInteger damageTaken) throws MissAttackException, PlayerDiedAndResurrectedException,
+    Message takeDamage(double damage, AtomicInteger damageTaken, Actor actor)
+            throws MissAttackException, PlayerDiedAndResurrectedException,
             PlayerDiedException, MinionDiedException, EmptyInventoryException;
 
 }

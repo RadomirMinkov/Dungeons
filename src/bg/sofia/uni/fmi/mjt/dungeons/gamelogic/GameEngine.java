@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 
+import bg.sofia.uni.fmi.mjt.dungeons.characters.Character;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
@@ -8,6 +9,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ItemNotFoundException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MinionDiedException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
@@ -346,5 +348,38 @@ public class GameEngine {
             }
         }
         return new Message("There was no offered item with this name!", Mode.CHOOSE, null);
+    }
+
+    public Message attack(User player, User user)
+            throws MapElementDoesNotExistException, NotEnoughExperienceException,
+            EnoughMinionsExistException, MinionDiedException {
+        Character playerCharacter = player.getCharacter(player.getActiveCharacter());
+        if (null == user) {
+            for (Minion minion : minions) {
+                if (minion.getPosition().getRow() == playerCharacter.getPosition().getRow() &&
+                        minion.getPosition().getColumn() == playerCharacter.getPosition().getColumn()) {
+                    try {
+                        return playerCharacter.attack(playerCharacter.getWeapon(), minion);
+                    } catch (MinionDiedException e) {
+                        gameBoard.removeElementFromTile(minion.getPosition().getRow(),
+                                minion.getPosition().getColumn(), MapElement.MINION);
+
+                        spawnMinion(RANDOM.nextInt(FOUR));
+                        return new Message(e.getMessage(), Mode.NORMAL, null);
+                    }
+
+                }
+            }
+        } else {
+            for (User activeUser : activeUsers) {
+                Character otherCharacter = activeUser.getCharacter(activeUser.getActiveCharacter());
+                if (otherCharacter.getPosition().getRow() == playerCharacter.getPosition().getRow() &&
+                        otherCharacter.getPosition().getColumn() == playerCharacter.getPosition().getColumn()) {
+                    return playerCharacter.attack(playerCharacter.getWeapon(), otherCharacter);
+
+                }
+            }
+        }
+        return new Message("Unsuccessful attack", Mode.BATTLE, user);
     }
 }
