@@ -167,7 +167,7 @@ public class CommandInterpreter {
             command = intepretate(message, key);
 
         } catch (UnknownCommandException | IllegalArgumentException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
         return command.execute();
     }

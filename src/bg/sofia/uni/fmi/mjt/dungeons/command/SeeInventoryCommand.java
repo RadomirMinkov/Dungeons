@@ -22,6 +22,6 @@ public class SeeInventoryCommand implements UserCommand {
     @Override
     public Message execute() {
         User user = (User) key.attachment();
-        return new Message(user.getCharacter(user.getActiveCharacter()).getInventory().toString(), Mode.NORMAL);
+        return new Message(user.getCharacter(user.getActiveCharacter()).getInventory().toString(), Mode.NORMAL, null);
     }
 }

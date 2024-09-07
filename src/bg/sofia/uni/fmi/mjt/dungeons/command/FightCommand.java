@@ -6,6 +6,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 public class FightCommand implements UserCommand {
     @Override
     public Message execute() {
-        return new Message("You chose to fight!", Mode.BATTLE);
+        return new Message("You chose to fight!", Mode.BATTLE, null);
     }
 }

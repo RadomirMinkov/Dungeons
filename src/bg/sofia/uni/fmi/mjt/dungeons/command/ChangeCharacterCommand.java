@@ -34,7 +34,7 @@ public class ChangeCharacterCommand implements UserCommand {
         try {
             return gameEngine.changeCharacter(user, classType, gameBoard);
         } catch (MapElementAlreadyExistsException | MapElementDoesNotExistException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }

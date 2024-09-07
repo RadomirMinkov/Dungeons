@@ -32,13 +32,13 @@ public class UsePotionCommand implements UserCommand {
             default -> null;
         };
         if (null == potion) {
-            return new Message("No such potion exists", Mode.BATTLE);
+            return new Message("No such potion exists", Mode.BATTLE, null);
         }
         try {
             user.getCharacter(user.getActiveCharacter()).usePotion(potion);
-            return new Message("You used the potion successfully!", Mode.BATTLE);
+            return new Message("You used the potion successfully!", Mode.BATTLE, null);
         } catch (ItemNotFoundException | EmptyInventoryException e) {
-            return new Message(e.getMessage(), Mode.BATTLE);
+            return new Message(e.getMessage(), Mode.BATTLE, null);
         }
     }
 }

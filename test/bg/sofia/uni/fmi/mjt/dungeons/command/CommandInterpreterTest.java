@@ -37,7 +37,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalShowMap() throws UnknownCommandException {
-        Message message = new Message("map", Mode.NORMAL);
+        Message message = new Message("map", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -46,29 +46,15 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalMoveCommand() throws UnknownCommandException {
-        Message message = new Message("move north", Mode.NORMAL);
+        Message message = new Message("move north", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
         assertEquals(MoveCommand.class, command.getClass(), "Expected MoveCommand to be returned");
     }
-
-    /*"""
-                map
-                help
-                login <username> <password>
-                logout
-                inventory
-                move <direction>
-                create character <class>
-                delete character <class>
-                choose/change character <class>
-                create user <username> <password>
-                delete user <username> <password>
-                exit"""; */
     @Test
     public void testInterpretNormalLoginCommand() throws UnknownCommandException {
-        Message message = new Message("login username password", Mode.NORMAL);
+        Message message = new Message("login username password", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -77,7 +63,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalLogoutCommand() throws UnknownCommandException {
-        Message message = new Message("logout", Mode.NORMAL);
+        Message message = new Message("logout", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -86,7 +72,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalInventoryCommand() throws UnknownCommandException {
-        Message message = new Message("inventory", Mode.NORMAL);
+        Message message = new Message("inventory", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -95,7 +81,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalCreateCharacterCommand() throws UnknownCommandException {
-        Message message = new Message("create character warrior", Mode.NORMAL);
+        Message message = new Message("create character warrior", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -104,7 +90,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalDeleteCharacter() throws UnknownCommandException {
-        Message message = new Message("delete character warrior", Mode.NORMAL);
+        Message message = new Message("delete character warrior", Mode.NORMAL, null);
         UserCommand command = commandInterpreter.intepretate(message, key);
 
         assertEquals(DeleteCharacter.class, command.getClass(), "Expected DeleteCharacter to be returned");
@@ -112,7 +98,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalCreateUserCommand() throws UnknownCommandException {
-        Message message = new Message("create user username password", Mode.NORMAL);
+        Message message = new Message("create user username password", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -121,7 +107,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalDeleteUserCommand() throws UnknownCommandException {
-        Message message = new Message("delete user username password", Mode.NORMAL);
+        Message message = new Message("delete user username password", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -130,7 +116,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalChangeCharacterCommand() throws UnknownCommandException {
-        Message message = new Message("change character warrior", Mode.NORMAL);
+        Message message = new Message("change character warrior", Mode.NORMAL, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -139,10 +125,10 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalInvalidCommand() {
-        Message message1 = new Message("invalidcommand", Mode.NORMAL);
-        Message message3 = new Message("user t a d", Mode.NORMAL);
-        Message message4 = new Message("r t a", Mode.NORMAL);
-        Message message0 = new Message("", Mode.NORMAL);
+        Message message1 = new Message("invalidcommand", Mode.NORMAL, null);
+        Message message3 = new Message("user t a d", Mode.NORMAL, null);
+        Message message4 = new Message("r t a", Mode.NORMAL, null);
+        Message message0 = new Message("", Mode.NORMAL, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message1, key),
                 "Expected UnknownCommandException to be thrown");
@@ -156,9 +142,9 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTradeInvalidCommand() {
-        Message message1 = new Message("invalidcommand", Mode.TRADE);
-        Message message4 = new Message("r t ", Mode.TRADE);
-        Message message0 = new Message("", Mode.TRADE);
+        Message message1 = new Message("invalidcommand", Mode.TRADE, null);
+        Message message4 = new Message("r t ", Mode.TRADE, null);
+        Message message0 = new Message("", Mode.TRADE, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message1, key),
                 "Expected UnknownCommandException to be thrown");
@@ -170,8 +156,8 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTreasureInvalidCommand() {
-        Message message1 = new Message("invalidcommand", Mode.TREASURE);
-        Message message0 = new Message("", Mode.TREASURE);
+        Message message1 = new Message("invalidcommand", Mode.TREASURE, null);
+        Message message0 = new Message("", Mode.TREASURE, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message1, key),
                 "Expected UnknownCommandException to be thrown");
@@ -181,9 +167,9 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretChooseInvalidCommand() {
-        Message message1 = new Message("invalidcommand", Mode.CHOOSE);
-        Message message2 = new Message("invalidcommand wa", Mode.CHOOSE);
-        Message message0 = new Message("", Mode.CHOOSE);
+        Message message1 = new Message("invalidcommand", Mode.CHOOSE, null);
+        Message message2 = new Message("invalidcommand wa", Mode.CHOOSE, null);
+        Message message0 = new Message("", Mode.CHOOSE, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message1, key),
                 "Expected UnknownCommandException to be thrown");
@@ -195,7 +181,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretNormalEmptyStringCommand() {
-        Message message = new Message("", Mode.NORMAL);
+        Message message = new Message("", Mode.NORMAL, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message, key),
                 "Expected UnknownCommandException to be thrown");
@@ -203,7 +189,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretBattleAttack() throws UnknownCommandException {
-        Message message = new Message("attack", Mode.BATTLE);
+        Message message = new Message("attack", Mode.BATTLE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -212,7 +198,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretPowerUpAttack() throws UnknownCommandException {
-        Message message = new Message("power up", Mode.BATTLE);
+        Message message = new Message("power up", Mode.BATTLE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -221,7 +207,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretUsePotionAttack() throws UnknownCommandException {
-        Message message = new Message("use potion item", Mode.BATTLE);
+        Message message = new Message("use potion item", Mode.BATTLE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -230,7 +216,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretBattleDefend() throws UnknownCommandException {
-        Message message = new Message("defend", Mode.BATTLE);
+        Message message = new Message("defend", Mode.BATTLE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -239,9 +225,9 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretBattleInvalidCommand() {
-        Message message = new Message("invalidbattle", Mode.BATTLE);
-        Message message0 = new Message("", Mode.BATTLE);
-        Message message2 = new Message("invalidbattle 2", Mode.BATTLE);
+        Message message = new Message("invalidbattle", Mode.BATTLE, null);
+        Message message0 = new Message("", Mode.BATTLE, null);
+        Message message2 = new Message("invalidbattle 2", Mode.BATTLE, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message, key),
                 "Expected UnknownCommandException to be thrown");
@@ -253,7 +239,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTreasurePickUp() throws UnknownCommandException {
-        Message message = new Message("pick up", Mode.TREASURE);
+        Message message = new Message("pick up", Mode.TREASURE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -262,7 +248,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTreasurePutDown() throws UnknownCommandException {
-        Message message = new Message("put down", Mode.TREASURE);
+        Message message = new Message("put down", Mode.TREASURE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -271,7 +257,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTreasureDropItem() throws UnknownCommandException {
-        Message message = new Message("drop item", Mode.TREASURE);
+        Message message = new Message("drop item", Mode.TREASURE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -280,7 +266,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretChooseTrade() throws UnknownCommandException {
-        Message message = new Message("trade", Mode.CHOOSE);
+        Message message = new Message("trade", Mode.CHOOSE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -289,7 +275,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretChooseFight() throws UnknownCommandException {
-        Message message = new Message("fight", Mode.CHOOSE);
+        Message message = new Message("fight", Mode.CHOOSE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -298,7 +284,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretChooseNothingTrade() throws UnknownCommandException {
-        Message message = new Message("nothing", Mode.CHOOSE);
+        Message message = new Message("nothing", Mode.CHOOSE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -326,7 +312,7 @@ public class CommandInterpreterTest {
 */
     @Test
     public void testInterpretTradeOffer() throws UnknownCommandException {
-        Message message = new Message("offer item", Mode.TRADE);
+        Message message = new Message("offer item", Mode.TRADE, null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -335,7 +321,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretTradeAccept() throws UnknownCommandException {
-        Message message = new Message("accept item", Mode.TRADE);
+        Message message = new Message("accept item", Mode.TRADE,  null);
 
         UserCommand command = commandInterpreter.intepretate(message, key);
 
@@ -344,7 +330,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testInterpretInvalid() throws UnknownCommandException {
-        Message message = new Message("invalidTRADE", Mode.TRADE);
+        Message message = new Message("invalidTRADE", Mode.TRADE, null);
 
         assertThrows(UnknownCommandException.class, () -> commandInterpreter.intepretate(message, key),
                 "Expected UnknownCommandException to be thrown");
@@ -352,7 +338,7 @@ public class CommandInterpreterTest {
 
     @Test
     public void testExecuteUnknownCommand() {
-        Message message = new Message("invalidcommand", Mode.NORMAL);
+        Message message = new Message("invalidcommand", Mode.NORMAL, null);
         Message result = commandInterpreter.executeCommand(message, key);
 
         assertEquals("Unknown command!", result.message(), "Expected UnknownCommandException message");

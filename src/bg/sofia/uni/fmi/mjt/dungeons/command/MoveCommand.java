@@ -30,9 +30,9 @@ public class MoveCommand implements UserCommand {
             Message message = gameEngine.movePlayer((User) key.attachment(), direction);
             return new Message(message.message()  + System.lineSeparator() +
                     gameEngine.getGameBoard().boardAsString().toString(),
-                    message.mode());
+                    message.mode(), message.user());
         } catch (UnknownCommandException | MapElementDoesNotExistException | MapElementAlreadyExistsException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }

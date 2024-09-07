@@ -30,7 +30,7 @@ public class AcceptItemCommand implements UserCommand {
         try {
             return gameEngine.acceptItem(user, item);
         } catch (EmptyInventoryException | ItemNotFoundException | FullBackPackException e) {
-            return new Message(e.getMessage(), Mode.CHOOSE);
+            return new Message(e.getMessage(), Mode.CHOOSE, null);
         }
     }
 }

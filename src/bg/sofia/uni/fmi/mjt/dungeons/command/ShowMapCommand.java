@@ -16,6 +16,6 @@ public class ShowMapCommand implements UserCommand {
 
     @Override
     public Message execute() {
-        return new Message(gameBoard.boardAsString().toString(), Mode.NORMAL);
+        return new Message(gameBoard.boardAsString().toString(), Mode.NORMAL, null);
     }
 }

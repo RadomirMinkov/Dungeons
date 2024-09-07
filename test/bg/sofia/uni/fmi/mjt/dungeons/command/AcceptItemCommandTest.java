@@ -50,7 +50,7 @@ class AcceptItemCommandTest {
     @Test
     void testExecuteReturnsCorrectMessageOnSuccess()
             throws EmptyInventoryException, ItemNotFoundException, FullBackPackException {
-        Message expectedMessage = new Message("Item accepted", Mode.BATTLE);
+        Message expectedMessage = new Message("Item accepted", Mode.BATTLE, null);
 
         when(gameEngineMock.acceptItem(userMock, item)).thenReturn(expectedMessage);
 

@@ -260,7 +260,7 @@ class GameEngineTest {
 
     @Test
     void testCreateCharacterSuccess() {
-        Message expectedMessage = new Message("Character created", Mode.NORMAL);
+        Message expectedMessage = new Message("Character created", Mode.NORMAL, null);
         when(mockUser.createCharacter(mockType)).thenReturn(expectedMessage);
 
         Message result = gameEngine.createCharacter(mockUser, mockType);
@@ -272,7 +272,7 @@ class GameEngineTest {
     @Test
     void testChangeCharacterSuccess() throws MapElementAlreadyExistsException, MapElementDoesNotExistException {
         Board mockBoard = mock(Board.class);
-        Message expectedMessage = new Message("Character changed", Mode.NORMAL);
+        Message expectedMessage = new Message("Character changed", Mode.NORMAL, null);
         when(mockUser.changeCharacter(mockType, mockBoard)).thenReturn(expectedMessage);
 
         Message result = gameEngine.changeCharacter(mockUser, mockType, mockBoard);
@@ -301,7 +301,7 @@ class GameEngineTest {
 
     @Test
     void testDeleteCharacterSuccess() throws NoSuchCharacterException {
-        Message expectedMessage = new Message("Character deleted", Mode.NORMAL);
+        Message expectedMessage = new Message("Character deleted", Mode.NORMAL, null);
         when(mockUser.deleteCharacter(mockType)).thenReturn(expectedMessage);
 
         Message result = gameEngine.deleteCharacter(mockUser, mockType);

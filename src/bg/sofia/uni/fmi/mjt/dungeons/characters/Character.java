@@ -159,9 +159,9 @@ public class Character implements Actor {
         try {
             AtomicInteger damageTaken = new AtomicInteger(0);
             enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
-            return new Message("You attacked the enemy for " + damageTaken, Mode.BATTLE);
+            return new Message("You attacked the enemy for " + damageTaken, Mode.BATTLE, null);
         } catch (Exception e) {
-            return new Message(e.getMessage(), Mode.BATTLE);
+            return new Message(e.getMessage(), Mode.BATTLE, null);
         }
     }
 

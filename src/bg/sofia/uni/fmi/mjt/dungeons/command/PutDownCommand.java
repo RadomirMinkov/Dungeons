@@ -29,9 +29,9 @@ public class PutDownCommand implements UserCommand {
                             .getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                             user.getCharacter(user.getActiveCharacter())
                                     .getPosition().getColumn(), MapElement.TREASURE);
-            return new Message("You left the treasure behind and it is lost forever!", Mode.NORMAL);
+            return new Message("You left the treasure behind and it is lost forever!", Mode.NORMAL, null);
         } catch (MapElementDoesNotExistException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }

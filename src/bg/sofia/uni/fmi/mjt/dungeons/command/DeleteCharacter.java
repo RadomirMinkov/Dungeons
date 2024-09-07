@@ -30,7 +30,7 @@ public class DeleteCharacter implements UserCommand {
         try {
             return gameEngine.deleteCharacter(user, classType);
         } catch (NoSuchCharacterException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }

@@ -134,9 +134,9 @@ public class Minion implements Actor {
         try {
             AtomicInteger damageTaken = new AtomicInteger(0);
             enemy.takeDamage(stats.getAttack() + item.getAttack(), damageTaken);
-            return new Message("Minion attacked you for " + damageTaken, Mode.BATTLE);
+            return new Message("Minion attacked you for " + damageTaken, Mode.BATTLE, null);
         } catch (Exception e) {
-            return new Message(e.getMessage(), Mode.BATTLE);
+            return new Message(e.getMessage(), Mode.BATTLE, null);
         }
     }
 
@@ -215,14 +215,14 @@ public class Minion implements Actor {
     public Message defend() {
         stats.adjustDefence(DEFENCE_MODIFIER);
         this.defencePowerUps += ONE;
-        return new Message("Minion choose to defend himself for the next received attack!", Mode.BATTLE);
+        return new Message("Minion choose to defend himself for the next received attack!", Mode.BATTLE, null);
     }
 
     public Message powerUp() {
         stats.adjustAttack(ATTACK_MODIFIER);
         this.attackPowerUps += TWO;
         stats.adjustCurrentMana(-THIRTY);
-        return new Message("Minion choose to power up for the next attack!", Mode.BATTLE);
+        return new Message("Minion choose to power up for the next attack!", Mode.BATTLE, null);
     }
 
 }

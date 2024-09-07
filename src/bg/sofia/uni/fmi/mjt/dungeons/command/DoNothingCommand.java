@@ -6,6 +6,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 public class DoNothingCommand implements UserCommand {
     @Override
     public Message execute() {
-        return new Message("Doing nothing!", Mode.NORMAL);
+        return new Message("Doing nothing!", Mode.NORMAL, null);
     }
 }

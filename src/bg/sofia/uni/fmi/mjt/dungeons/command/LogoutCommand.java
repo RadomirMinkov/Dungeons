@@ -25,7 +25,7 @@ public class LogoutCommand implements UserCommand {
         try {
             return gameEngine.logout(key);
         } catch (UserIsNotLoggedInException | MapElementDoesNotExistException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }

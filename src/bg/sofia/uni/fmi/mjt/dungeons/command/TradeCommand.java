@@ -7,6 +7,6 @@ public class TradeCommand implements UserCommand {
 
     @Override
     public Message execute() {
-        return new Message("You chose to trade!", Mode.TRADE);
+        return new Message("You chose to trade!", Mode.TRADE, null);
     }
 }

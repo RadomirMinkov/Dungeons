@@ -137,7 +137,7 @@ public class NIOClient {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
-        outputStream.writeObject(new Message(message, currentMode));
+        outputStream.writeObject(new Message(message, currentMode, null));
         outputStream.flush();
 
         byte[] serializedData = byteArrayOutputStream.toByteArray();

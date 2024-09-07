@@ -66,10 +66,10 @@ public class User implements Comparable<User> {
 
     public Message createCharacter(ClassType type) {
         if (characters.get(type) != null) {
-            return new Message("You already character of this class!", Mode.NORMAL);
+            return new Message("You already character of this class!", Mode.NORMAL, null);
         }
         characters.put(type, new Character(type.toString(), new Position(2, FOUR)));
-        return new Message("Temporary solution!", Mode.NORMAL);
+        return new Message("Temporary solution!", Mode.NORMAL, null);
     }
 
     public Message deleteCharacter(ClassType type) throws NoSuchCharacterException {
@@ -77,16 +77,16 @@ public class User implements Comparable<User> {
             throw new NoSuchCharacterException("There is no such character");
         }
         characters.remove(type);
-        return new Message("Character successfully deleted!", Mode.NORMAL);
+        return new Message("Character successfully deleted!", Mode.NORMAL, null);
     }
 
     public Message changeCharacter(ClassType type, Board gameBoard)
             throws MapElementDoesNotExistException, MapElementAlreadyExistsException {
         if (null != activeCharacter && activeCharacter.equals(type)) {
-            return new Message("You are already using this character", Mode.NORMAL);
+            return new Message("You are already using this character", Mode.NORMAL, null);
         }
         if (characters.get(type) == null) {
-            return new Message("You don't have a character of this class!", Mode.NORMAL);
+            return new Message("You don't have a character of this class!", Mode.NORMAL, null);
         }
         if (activeCharacter != null) {
             gameBoard.getBoard().removeElement(MapElement.PLAYER,
@@ -97,7 +97,7 @@ public class User implements Comparable<User> {
         gameBoard.getBoard().addElement(MapElement.PLAYER,
                 characters.get(type).getPosition().getRow(),
                 characters.get(type).getPosition().getColumn());
-        return new Message("Switched to the " + type + " class!", Mode.NORMAL);
+        return new Message("Switched to the " + type + " class!", Mode.NORMAL, null);
     }
 
     @Override

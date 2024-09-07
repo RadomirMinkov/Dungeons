@@ -30,15 +30,16 @@ public class Main {
         mockUser.createCharacter(ClassType.WARRIOR);
         when(mockKey.attachment()).thenReturn(mockUser);
 
-        Message mockMessage = new Message("change character warrior", Mode.NORMAL);
+        Message mockMessage = new Message("change character warrior", Mode.NORMAL, null);
         try {
             CommandInterpreter interpreter = new CommandInterpreter();
-            interpreter.executeCommand(new Message("login rminkov Alienkiller832", Mode.NORMAL), mockKey);
+            interpreter.executeCommand(new Message("login rminkov Alienkiller832", Mode.NORMAL, null), mockKey);
             System.out.println(interpreter.executeCommand(
-                    new Message("change character warrior", Mode.NORMAL), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("move up", Mode.NORMAL), mockKey).message());
-            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL), mockKey).message());
+                    new Message("change character warrior", Mode.NORMAL, null), mockKey).message());
+            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL, null), mockKey).message());
+            System.out.println(interpreter
+                    .executeCommand(new Message("move up", Mode.NORMAL, null), mockKey).message());
+            System.out.println(interpreter.executeCommand(new Message("map", Mode.NORMAL, null), mockKey).message());
 
             PriorityQueue<CustomPair> pr = new PriorityQueue<>();
             pr.add(new CustomPair(MapElement.OBSTACLE, null));

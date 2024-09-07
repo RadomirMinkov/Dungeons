@@ -36,13 +36,13 @@ public class DropItemCommand implements UserCommand {
             index++;
         }
         if (index >= treasureList.size()) {
-            return new Message("There was no item to drop!", Mode.TRADE);
+            return new Message("There was no item to drop!", Mode.TRADE, null);
         }
         try {
             user.getCharacter(user.getActiveCharacter()).getInventory().removeElement(index);
-            return new Message("You dropped " + word + "successfully and you can pick up the reasure!", Mode.TREASURE);
+            return new Message("You dropped " + word + "successfully and you can pick up the reasure!", Mode.TREASURE, null);
         } catch (EmptyInventoryException e) {
-            return new Message(e.getMessage() + "You can pick the treasure!", Mode.TREASURE);
+            return new Message(e.getMessage() + "You can pick the treasure!", Mode.TREASURE, null);
         }
     }
 }

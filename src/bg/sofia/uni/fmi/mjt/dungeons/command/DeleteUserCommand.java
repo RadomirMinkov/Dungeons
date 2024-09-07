@@ -28,7 +28,7 @@ public class DeleteUserCommand implements UserCommand {
         try {
             return gameEngine.deleteUser(username, password, key);
         } catch (ThereIsNoSuchUserException e) {
-            return new Message(e.getMessage(), Mode.NORMAL);
+            return new Message(e.getMessage(), Mode.NORMAL, null);
         }
     }
 }
