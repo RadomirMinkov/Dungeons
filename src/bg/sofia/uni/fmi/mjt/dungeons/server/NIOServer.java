@@ -10,11 +10,16 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_HOST;
+import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.SERVER_PORT;
+
 public class NIOServer {
 
     private Selector selector;
     private ServerSocketChannel serverChannel;
     private ByteBuffer buffer;
+
+    private static final int BUFFER_SIZE = 1024;
 
     public NIOServer(String host, int port) throws IOException {
         selector = Selector.open();
@@ -23,7 +28,7 @@ public class NIOServer {
         serverChannel.bind(new InetSocketAddress(host, port));
 
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
-        buffer = ByteBuffer.allocate(1024);
+        buffer = ByteBuffer.allocate(BUFFER_SIZE);
 
         System.out.println("Server started on port " + port);
     }
@@ -108,7 +113,7 @@ public class NIOServer {
 
     public static void main(String[] args) {
         try {
-            NIOServer server = new NIOServer("localhost", 7777);
+            NIOServer server = new NIOServer(SERVER_HOST, SERVER_PORT);
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

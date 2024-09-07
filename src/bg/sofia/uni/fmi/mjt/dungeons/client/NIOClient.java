@@ -97,7 +97,7 @@ public class NIOClient {
         }
     }
 
-    private void handleConnect(SelectionKey key) throws IOException {
+    void handleConnect(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
 
         if (channel.isConnectionPending()) {
@@ -111,6 +111,7 @@ public class NIOClient {
 
     public void sendMessage(String message) throws IOException {
         if (message.equals("help")) {
+            printInstructions();
             System.out.println(NORMAL_MODE_INSTRUCTIONS);
             return;
         }
@@ -120,13 +121,23 @@ public class NIOClient {
         selector.wakeup();
     }
 
-    private void handleWrite(SelectionKey key) throws IOException {
+    void printInstructions() {
+        switch (currentMode) {
+            case NORMAL -> System.out.println(NORMAL_MODE_INSTRUCTIONS);
+            case BATTLE -> System.out.println(BATTLE_MODE_INSTRUCTIONS);
+            case TRADE -> System.out.println(TRADING_MODE_INSTRUCTIONS);
+            case TREASURE -> System.out.println(TREASURE_MODE_INSTRUCTIONS);
+            case CHOOSE -> System.out.println(CHOOSE_MODE_INSTRUCTIONS);
+        }
+    }
+
+    void handleWrite(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
         String message = (String) key.attachment();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
-        outputStream.writeObject(new Message(message, Mode.NORMAL));
+        outputStream.writeObject(new Message(message, currentMode));
         outputStream.flush();
 
         byte[] serializedData = byteArrayOutputStream.toByteArray();
@@ -153,7 +164,7 @@ public class NIOClient {
         System.out.println("Connection closed.");
     }
 
-    private void handleRead(SelectionKey key) throws IOException {
+    void handleRead(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
 
         buffer.clear();
@@ -183,7 +194,7 @@ public class NIOClient {
         }
     }
 
-    private void printModeInstructions(Mode mode) {
+    void printModeInstructions(Mode mode) {
         switch (mode) {
             case NORMAL -> System.out.println(NORMAL_MODE_INSTRUCTIONS);
             case TRADE -> System.out.println(TRADING_MODE_INSTRUCTIONS);
@@ -200,5 +211,9 @@ public class NIOClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
