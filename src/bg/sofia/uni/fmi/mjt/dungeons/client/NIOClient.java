@@ -49,7 +49,7 @@ public class NIOClient {
             use potion <potion-type> { health, mana }""";
     static final String TRADING_MODE_INSTRUCTIONS = """
             offer <item>
-            accept item
+            accept <item>
             exit""";
     static final String TREASURE_MODE_INSTRUCTIONS = """
             pick up

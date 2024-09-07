@@ -5,21 +5,20 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_TWO;
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.ZERO_POINT_ZEROFIVE;
 
-public class Weapon implements Treasure, Item {
+public class Weapon extends Treasure implements  Item {
 
     private double upgradePercent = ZERO_POINT_TWO;
     private int level;
     private double attack;
-    private String name;
 
     public Weapon(String name) {
-        this.name = name;
+        super(name);
         this.level = 1;
         this.attack = Constants.FORTY;
     }
 
     public Weapon(String name, int level) {
-        this.name = name;
+        super(name);
         this.level = level;
         this.attack = Constants.FIFTY;
         for (int i = 1; i < level; i++) {
@@ -28,7 +27,7 @@ public class Weapon implements Treasure, Item {
     }
 
     public Weapon(String name, int level, int attack) {
-        this.name = name;
+        super(name);
         this.level = level;
         this.attack = attack;
     }
@@ -44,15 +43,9 @@ public class Weapon implements Treasure, Item {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public void upgradeItem() {
         level += 1;
         attack += attack * upgradePercent;
         upgradePercent += ZERO_POINT_ZEROFIVE;
     }
-
 }

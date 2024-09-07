@@ -3,9 +3,6 @@ package bg.sofia.uni.fmi.mjt.dungeons.items;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ItemNotFoundException;
-import bg.sofia.uni.fmi.mjt.dungeons.items.Inventory;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +11,7 @@ import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.UPGRADE_PERCENTAGE
 
 public class BackPack implements Inventory {
 
-    private List<Pickable> inventory;
+    private List<Treasure> inventory;
     private int capacity;
 
     public BackPack() {
@@ -23,7 +20,7 @@ public class BackPack implements Inventory {
     }
 
     @Override
-    public List<Pickable> getElements() {
+    public List<Treasure> getElements() {
         return inventory;
     }
 
@@ -38,7 +35,7 @@ public class BackPack implements Inventory {
     }
 
     @Override
-    public void addElement(Pickable item) throws FullBackPackException {
+    public void addElement(Treasure item) throws FullBackPackException {
         if (inventory.size() >= capacity) {
             throw new FullBackPackException("The Backpack is full! You should drop item to be able to pick another!");
         }
@@ -46,17 +43,18 @@ public class BackPack implements Inventory {
     }
 
     @Override
-    public Pickable getElement(int index) {
+    public Treasure getElement(int index) {
         return inventory.get(index);
     }
 
     @Override
     public void upgradeInventory() {
         capacity = (int) Math.round(capacity + capacity * UPGRADE_PERCENTAGE);
+
     }
 
     @Override
-    public void removeElement(Pickable item) throws ItemNotFoundException, EmptyInventoryException {
+    public void removeElement(Treasure item) throws ItemNotFoundException, EmptyInventoryException {
         if (inventory.isEmpty()) {
             throw new EmptyInventoryException("The inventory is empty!");
         }
@@ -67,14 +65,14 @@ public class BackPack implements Inventory {
     }
 
     @Override
-    public Pickable removeElement(int index) throws EmptyInventoryException {
+    public Treasure removeElement(int index) throws EmptyInventoryException {
         if (inventory.isEmpty()) {
             throw new EmptyInventoryException("The inventory is empty!");
         }
         if (index < 0 || index >= inventory.size()) {
             throw new IndexOutOfBoundsException("The index is out of bounds");
         }
-        Pickable element = inventory.get(index);
+        Treasure element = inventory.get(index);
         inventory.remove(index);
         return element;
     }

@@ -2,15 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EnoughMinionsExistException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.*;
 import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Spell;
@@ -293,5 +285,51 @@ public class GameEngine {
 
     private String generateSpellName() {
         return SPELL_NAMES.get(RANDOM.nextInt(SPELL_NAMES.size()));
+    }
+
+    public Message acceptItem(User user, String item) throws EmptyInventoryException, ItemNotFoundException, FullBackPackException {
+        Position position = user.getCharacter(user.getActiveCharacter()).getPosition();
+        User offeringUser = null;
+        for (User users : activeUsers) {
+            if (!users.equals(user) && users.getCharacter(users.getActiveCharacter()).getPosition().equals(position)) {
+                offeringUser = users;
+            }
+        }
+        if (offeringUser == null) {
+            return new Message("There is no other user on this tile!", Mode.NORMAL);
+        }
+        List<Treasure> items = offeringUser
+                .getCharacter(offeringUser.getActiveCharacter()).getInventory().getElements();
+        for (Treasure treasure : items) {
+            if (treasure.getName().equals(item) && treasure.getIsOffered()) {
+                offeringUser.getCharacter(offeringUser.getActiveCharacter()).getInventory().removeElement(treasure);
+                treasure.setOffered();
+                user.getCharacter(user.getActiveCharacter()).getInventory().addElement(treasure);
+                return new Message("The trade was completed!", Mode.CHOOSE);
+            }
+        }
+        return new Message("There was no offered item with this name!", Mode.CHOOSE);
+    }
+
+    public Message offerItem(User user, String item) {
+        Position position = user.getCharacter(user.getActiveCharacter()).getPosition();
+        User sending = null;
+        for (User users : activeUsers) {
+            if (!users.equals(user) && users.getCharacter(users.getActiveCharacter()).getPosition().equals(position)) {
+                sending = users;
+            }
+        }
+        if (sending == null) {
+            return new Message("There is no other user on this tile!", Mode.NORMAL);
+        }
+        List<Treasure> items = user
+                .getCharacter(user.getActiveCharacter()).getInventory().getElements();
+        for (Treasure treasure : items) {
+            if (treasure.getName().equals(item) && treasure.getIsOffered()) {
+                treasure.setOffered();
+                return new Message("The trade was completed!", Mode.CHOOSE);
+            }
+        }
+        return new Message("There was no offered item with this name!", Mode.CHOOSE);
     }
 }

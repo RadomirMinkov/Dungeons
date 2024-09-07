@@ -100,8 +100,8 @@ public class CommandInterpreter {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length) {
             return switch (words[0]) {
-                case "offer" -> new OfferCommand();
-                case "accept" -> new AcceptItemCommand();
+                case "offer" -> new OfferCommand(gameEngine, key, words[1]);
+                case "accept" -> new AcceptItemCommand(gameEngine, key, words[1]);
                 default -> throw new UnknownCommandException("Unknown command!");
             };
         }

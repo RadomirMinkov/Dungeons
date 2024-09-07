@@ -9,19 +9,10 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedAndResurrectedExceptio
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedException;
 
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
-import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
-import bg.sofia.uni.fmi.mjt.dungeons.items.Item;
-import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
-import bg.sofia.uni.fmi.mjt.dungeons.items.Potion;
-import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
-
-import bg.sofia.uni.fmi.mjt.dungeons.items.BackPack;
+import bg.sofia.uni.fmi.mjt.dungeons.items.*;
 
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.UsefulFunctions;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -143,11 +134,11 @@ public class Character implements Actor {
                 name + "died. Then resurrected dropping item " + droppedElement.toString());
     }
 
-    public void pickUpItem(Pickable item) throws FullBackPackException {
+    public void pickUpItem(Treasure item) throws FullBackPackException {
         inventory.addElement(item);
     }
 
-    public void dropItem(Pickable item) throws EmptyInventoryException, ItemNotFoundException {
+    public void dropItem(Treasure item) throws EmptyInventoryException, ItemNotFoundException {
         inventory.removeElement(item);
     }
 

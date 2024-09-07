@@ -13,14 +13,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Moon Sword"
+      "name": "Blackfyre"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Undyingrage"
+      "name": "Domain Expansion"
     },
     "isAlive": true,
     "experience": 0,
@@ -30,7 +30,8 @@
       "column": 2
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   },
   {
     "level": 3,
@@ -46,14 +47,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Herugrim"
+      "name": "Thunder Storm"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Necrotic Nightmare"
+      "name": "Domain Expansion"
     },
     "isAlive": true,
     "experience": 0,
@@ -63,7 +64,8 @@
       "column": 1
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   },
   {
     "level": 4,
@@ -79,14 +81,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Rebelion"
+      "name": "Storm Breaker"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Super Nova"
+      "name": "Arcaneblaze"
     },
     "isAlive": true,
     "experience": 70,
@@ -96,7 +98,8 @@
       "column": 3
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   },
   {
     "level": 6,
@@ -112,14 +115,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Herugrim"
+      "name": "Voidcleaver"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Chaosflare"
+      "name": "Firerampage"
     },
     "isAlive": true,
     "experience": 56,
@@ -129,7 +132,8 @@
       "column": 10
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   },
   {
     "level": 3,
@@ -145,14 +149,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Moon Sword"
+      "name": "Herugrim"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Chaosflare"
+      "name": "Shadowclap"
     },
     "isAlive": true,
     "experience": 0,
@@ -162,7 +166,8 @@
       "column": 4
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   },
   {
     "level": 1,
@@ -178,14 +183,14 @@
       "upgradePercent": 0.2,
       "level": 1,
       "attack": 40.0,
-      "name": "Serpent Reaver"
+      "name": "Storm Breaker"
     },
     "spell": {
       "upgradePercent": 0.3,
       "level": 1,
       "attack": 50.0,
       "manaCost": 30,
-      "name": "Eruption"
+      "name": "Fireball"
     },
     "isAlive": true,
     "experience": 0,
@@ -195,6 +200,7 @@
       "column": 3
     },
     "attackPowerUps": 0,
-    "defencePowerUps": 0
+    "defencePowerUps": 0,
+    "isFighting": false
   }
 ]

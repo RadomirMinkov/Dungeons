@@ -2,7 +2,15 @@ package bg.sofia.uni.fmi.mjt.dungeons.items;
 
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
 
-public interface Potion extends Pickable {
+public class Potion extends Treasure implements Pickable {
+    private int points;
 
-    int getPoints();
+    public Potion(String name, int points) {
+        super(name);
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }
