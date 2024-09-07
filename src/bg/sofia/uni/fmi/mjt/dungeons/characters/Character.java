@@ -9,10 +9,19 @@ import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedAndResurrectedExceptio
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.PlayerDiedException;
 
 import bg.sofia.uni.fmi.mjt.dungeons.gamelogic.Mode;
-import bg.sofia.uni.fmi.mjt.dungeons.items.*;
 
+import bg.sofia.uni.fmi.mjt.dungeons.items.BackPack;
+import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Item;
+import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Potion;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Treasure;
+import bg.sofia.uni.fmi.mjt.dungeons.items.Weapon;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Position;
-import bg.sofia.uni.fmi.mjt.dungeons.utility.*;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Constants;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.Pickable;
+import bg.sofia.uni.fmi.mjt.dungeons.utility.UsefulFunctions;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -57,6 +66,10 @@ public class Character implements Actor {
         this.activeWeapon = weapon;
         this.isAlive = true;
         this.neededExperience = Constants.ONE_HUNDRED;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -108,11 +121,11 @@ public class Character implements Actor {
     public void takeDamage(double damage, AtomicInteger damageTaken)
             throws MissAttackException, PlayerDiedAndResurrectedException,
             PlayerDiedException, EmptyInventoryException {
-        double initialDamage = damage - stats.getDefence() * Constants.DEFENCE_MODIFIER;
+        double initialDamage = damage - stats.getDefence();
         if (initialDamage <= 0) {
             throw new MissAttackException("The attack missed!");
         }
-        stats.adjustCurrentHealth((int) Math.floor(initialDamage));
+        stats.adjustCurrentHealth((int) Math.floor(-initialDamage));
         if (stats.getCurrentHealth() < 0) {
             resurrectPlayer();
         }
@@ -127,7 +140,6 @@ public class Character implements Actor {
         }
         stats.setHealth(Constants.FIFTY);
         int index = UsefulFunctions.getRandomNumber(0, inventory.getSize());
-
         Pickable droppedElement = inventory.removeElement(index);
 
         throw new PlayerDiedAndResurrectedException(
@@ -172,9 +184,7 @@ public class Character implements Actor {
         return oldWeapon;
     }
 
-    public void usePotion(Potion potion) throws
-            ItemNotFoundException, EmptyInventoryException {
-
+    public void usePotion(Potion potion) throws ItemNotFoundException, EmptyInventoryException {
         if (!inventory.getElements().contains(potion)) {
             throw new ItemNotFoundException("There are no such item in the inventory!");
         }

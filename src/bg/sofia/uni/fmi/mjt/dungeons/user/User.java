@@ -23,9 +23,6 @@ public class User implements Comparable<User> {
 
     private ClassType activeCharacter;
 
-    public User() {
-    }
-
     public User(Credentials credentials, Map<ClassType, Character> characters) {
         this.credentials = credentials;
         this.characters = characters;
@@ -100,7 +97,7 @@ public class User implements Comparable<User> {
         gameBoard.getBoard().addElement(MapElement.PLAYER,
                 characters.get(type).getPosition().getRow(),
                 characters.get(type).getPosition().getColumn());
-        return new Message("Switched to the " + type + "class!", Mode.NORMAL);
+        return new Message("Switched to the " + type + " class!", Mode.NORMAL);
     }
 
     @Override

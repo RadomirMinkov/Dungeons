@@ -61,7 +61,7 @@ public class CommandInterpreter {
     }
 
     private UserCommand intepretateBattle(Message message, SelectionKey key) throws UnknownCommandException {
-        String[] words = message.message().split("\\s+");
+        String[] words =  message.message().isBlank() ? new String[0] : message.message().split("\\s+");
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
@@ -80,7 +80,7 @@ public class CommandInterpreter {
     }
 
     private UserCommand intepretateChoose(Message message, SelectionKey key) throws UnknownCommandException {
-        String[] words = message.message().split("\\s+");
+        String[] words =  message.message().isBlank() ? new String[0] : message.message().split("\\s+");
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
@@ -95,7 +95,7 @@ public class CommandInterpreter {
     }
 
     private UserCommand intepretateTrade(Message message, SelectionKey key) throws UnknownCommandException {
-        String[] words = message.message().split("\\s+");
+        String[] words =  message.message().isBlank() ? new String[0] : message.message().split("\\s+");
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length) {
@@ -109,21 +109,21 @@ public class CommandInterpreter {
     }
 
     private UserCommand intepretateTreasure(Message message, SelectionKey key) throws UnknownCommandException {
-        String[] words = message.message().split("\\s+");
+        String[] words =  message.message().isBlank() ? new String[0] : message.message().split("\\s+");
         if (0 == words.length) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (TWO == words.length && words[0].equals("pick") && words[1].equals("up")) {
             return new PickUpCommand(gameEngine, key);
         } else if (TWO == words.length && words[0].equals("put") && words[1].equals("down")) {
             return new PutDownCommand(gameEngine, key);
-        } else if (TWO == words.length && words[0].equals("drop") ) {
-            return  new DropItemCommand(gameEngine, key, words[1]);
+        } else if (TWO == words.length && words[0].equals("drop")) {
+            return new DropItemCommand(gameEngine, key, words[1]);
         }
         throw new UnknownCommandException("Unknown command!");
     }
 
     public UserCommand intepretateNormal(Message message, SelectionKey key) throws UnknownCommandException {
-        String[] words = message.message().split("\\s+");
+        String[] words =  message.message().isBlank() ? new String[0] : message.message().split("\\s+");
         if (words.length == 0) {
             throw new UnknownCommandException("There is no empty commands without parameters!");
         } else if (ONE == words.length) {
@@ -135,8 +135,10 @@ public class CommandInterpreter {
                 case "change", "choose" -> new ChangeCharacterCommand(gameEngine, (User) key.attachment(),
                         ClassType.fromString(words[2]), gameEngine.getGameBoard());
                 case "login" -> new LoginCommand(gameEngine, words[1], words[TWO], key);
-                case "create" -> new CreateCharacter(gameEngine, (User) key.attachment(), ClassType.valueOf(words[2]));
-                case "delete" -> new DeleteCharacter(gameEngine, (User) key.attachment(), ClassType.valueOf(words[2]));
+                case "create" ->
+                        new CreateCharacter(gameEngine, (User) key.attachment(), ClassType.fromString(words[2]));
+                case "delete" ->
+                        new DeleteCharacter(gameEngine, (User) key.attachment(), ClassType.fromString(words[2]));
                 default -> throw new UnknownCommandException("Unknown command!");
             };
         } else if (FOUR == words.length && words[1].equals("user")) {

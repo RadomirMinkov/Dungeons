@@ -2,7 +2,17 @@ package bg.sofia.uni.fmi.mjt.dungeons.gamelogic;
 
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
-import bg.sofia.uni.fmi.mjt.dungeons.exceptions.*;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EmptyInventoryException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.EnoughMinionsExistException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.FullBackPackException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ItemNotFoundException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementAlreadyExistsException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.MapElementDoesNotExistException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NoSuchCharacterException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.NotEnoughExperienceException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.ThereIsNoSuchUserException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UnknownCommandException;
+import bg.sofia.uni.fmi.mjt.dungeons.exceptions.UserIsNotLoggedInException;
 import bg.sofia.uni.fmi.mjt.dungeons.items.HealthPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Spell;
@@ -38,7 +48,7 @@ import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.WEAPONS_NAMES;
 
 public class GameEngine {
 
-    private static int currentMinionsNumber;
+    private int currentMinionsNumber;
     List<User> allRegisteredUsers;
     Map<String, String> usersCredentials;
     Map<String, String> activeCredentials;
@@ -75,6 +85,10 @@ public class GameEngine {
 
     public Board getGameBoard() {
         return gameBoard;
+    }
+
+    public int activeMinions() {
+        return currentMinionsNumber;
     }
 
     public Message deleteUser(String username, String password, SelectionKey key) throws ThereIsNoSuchUserException {
@@ -180,16 +194,15 @@ public class GameEngine {
         gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                 user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.PLAYER);
 
-        user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column))
-        ;
+        user.getCharacter(user.getActiveCharacter()).setPosition(new Position(row, column));
         gameBoard.addElementToTile(row, column, MapElement.PLAYER);
         Message message = inspectTile(row, column);
         return new Message("You moved " + direction + "! " + message.message(), message.mode());
     }
 
-    private Message inspectTile(int row, int column) {
+    public Message inspectTile(int row, int column) {
         PriorityQueue<MapElement> tile = gameBoard.getTile(row, column);
-        if (TWO == tile.size() || ONE == tile.size()) {
+        if ((TWO == tile.size() || ONE == tile.size()) && tile.contains(MapElement.FREE_SPACE)) {
             return new Message(EMPTY_STRING, Mode.NORMAL);
         }
         if (tile.contains(MapElement.MINION)) {
@@ -235,6 +248,7 @@ public class GameEngine {
         }
         Position minionPosition = genPosition();
         gameBoard.getTile(minionPosition.getRow(), minionPosition.getColumn()).add(MapElement.MINION);
+        currentMinionsNumber++;
     }
 
     private void populateBoardWithMinions() throws MapElementAlreadyExistsException {
@@ -258,7 +272,7 @@ public class GameEngine {
             user.getCharacter(user.getActiveCharacter()).pickUpItem(treasure);
             gameBoard.removeElementFromTile(user.getCharacter(user.getActiveCharacter()).getPosition().getRow(),
                     user.getCharacter(user.getActiveCharacter()).getPosition().getColumn(), MapElement.TREASURE);
-            return new Message("Successfully picked up the treasure which is " + treasure, Mode.NORMAL);
+            return new Message("Successfully picked up the treasure", Mode.NORMAL);
         } catch (FullBackPackException e) {
             return new Message(e.getMessage(), Mode.TRADE);
         } catch (MapElementDoesNotExistException e) {

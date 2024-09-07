@@ -22,12 +22,14 @@ public class Credentials implements Comparable<Credentials> {
         if (password == null || password.isEmpty() || password.isBlank()) {
             throw new IllegalArgumentException("The given username is invalid!");
         }
+        this.username = username;
     }
 
     public void updatePassword(String password) {
         if (password == null || password.isEmpty() || password.isBlank()) {
             throw new IllegalArgumentException("The given password is invalid!");
         }
+        this.password = password;
     }
 
     @Override

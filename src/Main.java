@@ -49,6 +49,5 @@ public class Main {
         } catch (MapElementAlreadyExistsException e) {
             System.out.println("Failed initialisation");
         }
-
     }
 }
