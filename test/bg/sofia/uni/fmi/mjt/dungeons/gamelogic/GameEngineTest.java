@@ -4,6 +4,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.characters.Character;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.ClassType;
 import bg.sofia.uni.fmi.mjt.dungeons.characters.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.exceptions.*;
+import bg.sofia.uni.fmi.mjt.dungeons.items.BackPack;
 import bg.sofia.uni.fmi.mjt.dungeons.items.Treasure;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.Board;
 import bg.sofia.uni.fmi.mjt.dungeons.maps.MapElement;
@@ -14,13 +15,9 @@ import bg.sofia.uni.fmi.mjt.dungeons.utility.JsonWriter;
 import bg.sofia.uni.fmi.mjt.dungeons.utility.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import java.nio.channels.SelectionKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.utility.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,22 +29,31 @@ class GameEngineTest {
     private JsonReader mockJsonReader;
     private JsonWriter mockJsonWriter;
     private User mockUser;
+    private User mockOtherUser;
     private Board mockBoard;
     private Character mockCharacter;
     private SelectionKey mockKey;
+    private SelectionKey otherMockKey;
     private Position mockPosition;
     private ClassType mockType;
+
+    private BackPack mockInventory;
+    private Treasure mockTreasure;
 
     @BeforeEach
     void setUp() throws MapElementAlreadyExistsException {
         mockJsonReader = mock(JsonReader.class);
         mockJsonWriter = mock(JsonWriter.class);
         mockUser = mock(User.class);
+        mockOtherUser = mock(User.class);
         mockBoard = mock(Board.class);
         mockKey = mock(SelectionKey.class);
+        otherMockKey = mock(SelectionKey.class);
         mockCharacter = mock(Character.class);
         mockPosition = mock(Position.class);
         mockType = mock(ClassType.class);
+        mockInventory = mock(BackPack.class);
+        mockTreasure = mock(Treasure.class);
 
         List<User> users = new ArrayList<>();
         List<Minion> minions = new ArrayList<>();
@@ -55,6 +61,8 @@ class GameEngineTest {
         when(mockJsonReader.readUsersFromJson(anyMap())).thenReturn(users);
         when(mockJsonReader.readMinionsFromJson()).thenReturn(minions);
         when(mockCharacter.getPosition()).thenReturn(mockPosition);
+        when(mockKey.attachment()).thenReturn(mockUser);
+        when(otherMockKey.attachment()).thenReturn(mockOtherUser);
 
         gameEngine = new GameEngine();
         gameEngine.jsonReader = mockJsonReader;
@@ -165,7 +173,7 @@ class GameEngineTest {
         when(mockPosition.getColumn()).thenReturn(4);
         gameEngine.activeUsers.add(mockUser);
 
-        gameEngine.getGameBoard().addElementToTile(2,4,MapElement.PLAYER);
+        gameEngine.getGameBoard().addElementToTile(2, 4, MapElement.PLAYER);
         Message result = gameEngine.logout(mockKey);
 
         assertEquals("You logged out successfully!", result.message());
@@ -185,8 +193,8 @@ class GameEngineTest {
         Treasure mockTreasure = mock(Treasure.class);
         when(mockTreasure.toString()).thenReturn("Health Potion");
         when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
-        when(mockCharacter.getPosition()).thenReturn(new Position(0,0));
-        gameEngine.getGameBoard().addElementToTile(0,0 , MapElement.TREASURE);
+        when(mockCharacter.getPosition()).thenReturn(new Position(0, 0));
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.TREASURE);
         Message result = gameEngine.pickUpTreasure(mockUser);
 
         assertEquals("Successfully picked up the treasure", result.message());
@@ -200,6 +208,7 @@ class GameEngineTest {
 
         assertEquals(7, gameEngine.activeMinions());
     }
+
     @Test
     void testGenPosition() {
         Position position = gameEngine.genPosition();
@@ -331,8 +340,8 @@ class GameEngineTest {
         tile.add(MapElement.MINION);
 
         when(mockBoard.getTile(0, 0)).thenReturn(tile);
-        gameEngine.getGameBoard().addElementToTile(0,0,MapElement.MINION);
-        gameEngine.getGameBoard().addElementToTile(0,0,MapElement.PLAYER);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.MINION);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.PLAYER);
         Message result = gameEngine.inspectTile(0, 0);
         assertEquals("Starting battle with a minion of the evil!", result.message());
         assertEquals(Mode.BATTLE, result.mode());
@@ -344,8 +353,8 @@ class GameEngineTest {
         tile.add(MapElement.PLAYER);
         tile.add(MapElement.PLAYER);
 
-        gameEngine.getGameBoard().addElementToTile(0,0,MapElement.PLAYER);
-        gameEngine.getGameBoard().addElementToTile(0,0,MapElement.PLAYER);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.PLAYER);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.PLAYER);
         Message result = gameEngine.inspectTile(0, 0);
         assertEquals("Initiate trade or battle with player!", result.message());
         assertEquals(Mode.CHOOSE, result.mode());
@@ -354,8 +363,8 @@ class GameEngineTest {
     @Test
     public void testInspectTileWithTreasure() throws MapElementAlreadyExistsException {
 
-        gameEngine.getGameBoard().addElementToTile(0,0, MapElement.TREASURE);
-        gameEngine.getGameBoard().addElementToTile(0,0, MapElement.PLAYER);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.TREASURE);
+        gameEngine.getGameBoard().addElementToTile(0, 0, MapElement.PLAYER);
         Message result = gameEngine.inspectTile(0, 0);
         assertEquals("You stumbled upon a treasure! Do you want to pick it?", result.message());
         assertEquals(Mode.TREASURE, result.mode());
@@ -370,5 +379,109 @@ class GameEngineTest {
         Message result = gameEngine.inspectTile(0, 0);
         assertEquals("", result.message());
         assertEquals(Mode.NORMAL, result.mode());
+
     }
+
+    /*@Test
+    void testOfferItemSuccess() {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+        when(mockInventory.getElements()).thenReturn(Collections.singletonList(mockTreasure));
+        when(mockTreasure.getName()).thenReturn("Sword");
+        when(mockTreasure.getIsOffered()).thenReturn(true);
+
+        Message message = gameEngine.offerItem(mockUser, "Sword");
+
+        assertEquals("The trade was completed!", message.message());
+        assertEquals(Mode.CHOOSE, message.mode());
+    }
+
+    @Test
+    void testOfferItemNoMatchingTreasure() {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+        when(mockInventory.getElements()).thenReturn(Collections.singletonList(mockTreasure));
+        when(mockTreasure.getName()).thenReturn("Shield");
+        when(mockTreasure.getIsOffered()).thenReturn(true);
+
+        Message message = gameEngine.offerItem(mockUser, "Sword");
+
+        assertEquals("There was no offered item with this name!", message.message());
+        assertEquals(Mode.CHOOSE, message.mode());
+    }
+
+    @Test
+    void testOfferItemNoOtherUser() throws MapElementDoesNotExistException, UserIsNotLoggedInException {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+        when(mockInventory.getElements()).thenReturn(Collections.singletonList(mockTreasure));
+        when(mockTreasure.getName()).thenReturn("Sword");
+        when(mockTreasure.getIsOffered()).thenReturn(true);
+
+        gameEngine.logout(otherMockKey);
+
+        Message message = gameEngine.offerItem(mockUser, "Sword");
+
+        assertEquals("There is no other user on this tile!", message.message());
+        assertEquals(Mode.NORMAL, message.mode());
+    }
+
+   @Test
+    void testAcceptItemSuccess() throws EmptyInventoryException, ItemNotFoundException, FullBackPackException {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+
+        when(mockOtherUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+
+        when(mockInventory.getElements()).thenReturn(Collections.singletonList(mockTreasure));
+        when(mockTreasure.getName()).thenReturn("Sword");
+        when(mockTreasure.getIsOffered()).thenReturn(true);
+
+        Message message = gameEngine.acceptItem(mockUser, "Sword");
+
+        assertEquals("The trade was completed!", message.message());
+        assertEquals(Mode.CHOOSE, message.mode());
+        verify(mockInventory).removeElement(mockTreasure);
+        verify(mockInventory).addElement(mockTreasure);
+    }
+
+    @Test
+    void testAcceptItemNoMatchingTreasure() throws FullBackPackException, EmptyInventoryException, ItemNotFoundException {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+
+        when(mockOtherUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+
+        when(mockInventory.getElements()).thenReturn(Collections.singletonList(mockTreasure));
+        when(mockTreasure.getName()).thenReturn("Shield");
+        when(mockTreasure.getIsOffered()).thenReturn(true);
+
+        Message message = gameEngine.acceptItem(mockUser, "Sword");
+
+        assertEquals("There was no offered item with this name!", message.message());
+        assertEquals(Mode.CHOOSE, message.mode());
+    }
+
+     @Test
+    void testAcceptItemNoOfferingUser() throws FullBackPackException, EmptyInventoryException, ItemNotFoundException, MapElementDoesNotExistException, UserIsNotLoggedInException {
+        when(mockUser.getCharacter(any())).thenReturn(mockCharacter);
+        when(mockCharacter.getPosition()).thenReturn(new Position(1, 1));
+        when(mockCharacter.getInventory()).thenReturn(mockInventory);
+
+        gameEngine.logout(otherMockKey);
+
+        Message message = gameEngine.acceptItem(mockUser, "Sword");
+
+        assertEquals("There is no other user on this tile!", message.message());
+        assertEquals(Mode.NORMAL, message.mode());
+    } */
 }

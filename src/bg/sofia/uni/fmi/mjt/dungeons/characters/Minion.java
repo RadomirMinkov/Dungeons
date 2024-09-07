@@ -78,6 +78,14 @@ public class Minion implements Actor {
         this.neededExperience = neededExperience;
     }
 
+    public int getAttackPowerUps() {
+        return attackPowerUps;
+    }
+
+    public int getDefencePowerUps() {
+        return defencePowerUps;
+    }
+
     @Override
     public int getLevel() {
         return level;
@@ -96,6 +104,8 @@ public class Minion implements Actor {
         while (experience >= neededExperience) {
             experience -= neededExperience;
             level += 1;
+            stats.adjustMaxHealth(TEN);
+            stats.adjustMaxMana(TEN);
             stats.adjustCurrentHealth(Constants.TEN);
             stats.adjustCurrentMana(Constants.TEN);
             stats.adjustDefence(Constants.FIVE);
@@ -142,7 +152,7 @@ public class Minion implements Actor {
 
     @Override
     public void takeDamage(double damage, AtomicInteger damageTaken) throws MissAttackException, MinionDiedException {
-        double initialDamage = damage - stats.getDefence() * Constants.DEFENCE_MODIFIER;
+        double initialDamage = damage - stats.getDefence();
         if (initialDamage <= 0) {
             throw new MissAttackException("The attack missed!");
         }
@@ -155,8 +165,8 @@ public class Minion implements Actor {
     }
 
     public Action decideAction() {
-        double healthPercentage = (double) stats.getCurrentHealth() / stats.getMaxHealth();
-        double manaPercentage = (double) stats.getCurrentMana() / stats.getMaxMana();
+        double healthPercentage = (double) (stats.getCurrentHealth() * 1.0) / (stats.getMaxHealth() * 1.0);
+        double manaPercentage = (double) (stats.getCurrentMana() * 1.0) / (stats.getMaxMana() * 1.0);
 
         if (healthPercentage < ZERO_POINT_THREE && manaPercentage < ZERO_POINT_THREE) {
             return Action.DEFEND;
@@ -202,13 +212,13 @@ public class Minion implements Actor {
         };
     }
 
-    private Message defend() {
+    public Message defend() {
         stats.adjustDefence(DEFENCE_MODIFIER);
         this.defencePowerUps += ONE;
         return new Message("Minion choose to defend himself for the next received attack!", Mode.BATTLE);
     }
 
-    private Message powerUp() {
+    public Message powerUp() {
         stats.adjustAttack(ATTACK_MODIFIER);
         this.attackPowerUps += TWO;
         stats.adjustCurrentMana(-THIRTY);
